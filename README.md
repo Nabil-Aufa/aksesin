@@ -1,9 +1,9 @@
 # Aksesin
-Aksesin adalah platform berbasis web yang membantu pengguna menemukan dan  mengevaluasi aksesibilitas suatu tempat berdasarkan kebutuhan mereka.  
+
+Aksesin adalah platform berbasis web yang membantu pengguna menemukan dan  mengevaluasi aksesibilitas suatu tempat berdasarkan kebutuhan mereka.
 
 Kelompok Aksesin (15)  
-Ketua Kelompok:  
-Anggota 1:   
-Anggota 2:  
-
+Ketua Kelompok: Nabil Aufa Danaputra - 24/535223/TK/59357  
+Anggota 1:  
+Anggota 2:
 
