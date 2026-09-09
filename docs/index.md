@@ -256,6 +256,9 @@ Kelompok pengguna kelima sengaja tidak dimasukkan ke dalam MVP agar cakupan teta
 | FR 24 | Sistem menyediakan halaman moderasi bagi moderator untuk meninjau, menyetujui, atau menolak laporan yang ditandai bermasalah. (UC14) |
 | FR 25 | Sistem memungkinkan moderator menyunting atau menonaktifkan data tempat dan laporan yang tidak sesuai. (UC15) |
 | FR 26 | Sistem menyediakan navigasi penuh melalui papan ketik serta teks alternatif pada seluruh gambar dan ikon pada halaman utama, agar dapat digunakan bersama pembaca layar. (UC01 sampai UC15) |
+| FR 27 | Sistem menampilkan daftar tempat terdekat berdasarkan lokasi pengguna apabila izin akses lokasi diberikan. (UC03) |
+| FR 28 | Sistem memungkinkan pengguna menyaring dan mengurutkan hasil pencarian berdasarkan skor kesesuaian dan kategori fasilitas yang dibutuhkan. (UC03, UC07) |
+| FR 29 | Sistem menampilkan riwayat kontribusi pengguna beserta status verifikasi setiap laporan yang pernah dikirim. (UC08, UC11) |
 
 ### Entity Relationship Diagram
 
@@ -270,7 +273,7 @@ Kelompok pengguna kelima sengaja tidak dimasukkan ke dalam MVP agar cakupan teta
 | Kegiatan | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
 | Perencanaan dan analisis kebutuhan | X | X |  |  |  |  |  |  |  |  |  |  |
-| Perancangan sistem: use case, ERD, dan wireframe |  | X | X |  |  |  |  |  |  |  |  |  |
+| Perancangan sistem: use case, ERD, wireframe, dan panduan visual |  | X | X |  |  |  |  |  |  |  |  |  |
 | Penyiapan repositori, GitHub Project, dan GitHub Actions |  | X | X |  |  |  |  |  |  |  |  |  |
 | Konfigurasi lingkungan cloud dan basis data |  |  | X | X |  |  |  |  |  |  |  |  |
 | Sprint 1: autentikasi dan profil kebutuhan aksesibilitas |  |  |  | X | X |  |  |  |  |  |  |  |
