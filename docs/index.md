@@ -155,7 +155,3 @@ Aksesin memperluas konsep accessibility mapping dengan personal accessibility pr
 **Key Competitive Advantage dan Unique Value:**
 
 Aksesin menggabungkan AI, community verification, dan personalized compatibility assessment untuk mengubah data dan bukti visual menjadi informasi yang relevan bagi kebutuhan tiap pengguna.
-
-## Dokumen Proyek
-
-- [Proposal Aksesin](plans/Aksesin_proposal_edited.md)
