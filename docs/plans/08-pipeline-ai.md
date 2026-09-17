@@ -2,7 +2,7 @@
 
 Dokumen ini menjelaskan komponen AI Aksesin dari pengumpulan foto sampai model berjalan di produksi. Strateginya hybrid: detektor berbasis vision API dipasang lebih dahulu supaya MVP utuh sebelum UTS, lalu model YOLO hasil pelatihan sendiri menyusul di Sprint 2 dan dibandingkan secara terukur.
 
-Issue terkait: N2, N3, #24, #25, #26, #28 (Nabil), #27 (Gilbert dan Nabil).
+Issue terkait: #39, #40, #24, #25, #26, #28 (Nabil), #27 (Gilbert dan Nabil).
 
 ## Kelas deteksi
 
@@ -49,7 +49,7 @@ Aturan tambahan:
 
 ### Sumber
 
-1. **Foto sendiri** di lingkungan kampus UGM dan tempat umum di Yogyakarta. Ini sumber utama, karena bentuk ramp, pintu, dan toilet di Indonesia bisa berbeda dari dataset luar negeri. Foto yang diambil untuk data demo di N4 sekaligus dipakai di sini.
+1. **Foto sendiri** di lingkungan kampus UGM dan tempat umum di Yogyakarta. Ini sumber utama, karena bentuk ramp, pintu, dan toilet di Indonesia bisa berbeda dari dataset luar negeri. Foto yang diambil untuk data demo di #41 sekaligus dipakai di sini.
 2. **Dataset publik** sebagai tambahan, hanya jika lisensinya mengizinkan pemakaian untuk riset atau pendidikan. Catat nama dataset, tautan, dan lisensinya. Referensi awal ada di daftar pustaka proposal, seperti Project Sidewalk dan RampNet untuk landaian trotoar.
 
 ### Privasi dan etika pengambilan foto
@@ -165,7 +165,7 @@ Jika tidak, produksi tetap memakai vision API dan model sendiri dilaporkan sebag
 
 ## Kriteria penerimaan
 
-### N2 Menyiapkan kerangka layanan deteksi AI
+### #39 Menyiapkan kerangka layanan deteksi AI
 
 - [ ] Aplikasi FastAPI di `ai-service/` dengan struktur sesuai dokumen ini.
 - [ ] `GET /kesehatan` dan `POST /deteksi` tersedia sesuai kontrak, dengan detektor sementara yang selalu mengembalikan daftar deteksi kosong.
@@ -175,7 +175,7 @@ Jika tidak, produksi tetap memakai vision API dan model sendiri dilaporkan sebag
 - [ ] Minimal satu pengujian di `ai-service/tests/`, sehingga `pytest` tidak berhenti dengan kode keluar 5.
 - [ ] `ruff check .` bersih dan job CI layanan AI hijau dengan langkah lint dan uji benar-benar berjalan.
 
-### N3 Mengimplementasikan detektor berbasis vision API
+### #40 Mengimplementasikan detektor berbasis vision API
 
 - [ ] Penyedia vision API dipilih, dengan alasan pemilihan dan perkiraan biaya dicatat di komentar issue.
 - [ ] Detektor mengembalikan bentuk respons yang sama persis dengan kontrak.
