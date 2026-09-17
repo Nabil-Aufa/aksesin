@@ -1,3 +1,5 @@
 theme: jekyll-theme-cayman
 title: Aksesin
 description: Platform berbasis web untuk menemukan dan mengevaluasi aksesibilitas tempat sesuai kebutuhan pengguna
+exclude:
+  - plans
