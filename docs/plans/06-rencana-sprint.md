@@ -38,18 +38,16 @@ gantt
 | **Inti** | Wajib selesai di sprint tersebut. Jika terancam terlambat, dibahas di sinkronisasi terdekat dan anggota lain membantu |
 | **Geser** | Dikerjakan jika inti sudah aman. Boleh pindah ke sprint berikutnya tanpa mengganggu issue lain |
 
-## Issue baru yang perlu dibuat
+## Issue tambahan
 
-Empat pekerjaan berikut belum punya issue di papan proyek. Nabil membuatnya di awal Sprint 0 dengan label dan assignee sesuai tabel.
+Empat pekerjaan berikut belum ada di breakdown worksheet dan ditambahkan ke papan proyek pada 17 September 2026.
 
-| Kode sementara | Judul | Pemilik | Label |
-|---|---|---|---|
-| N1 | Menyiapkan kerangka proyek web | Gilbert | `infrastruktur` |
-| N2 | Menyiapkan kerangka layanan deteksi AI | Nabil | `ai` |
-| N3 | Mengimplementasikan detektor berbasis vision API | Nabil | `ai` |
-| N4 | Menyiapkan data tempat awal untuk demo | Nabil | `pencarian` |
-
-Setelah dibuat, ganti kode sementara di dokumen ini dengan nomor issue aslinya.
+| Issue | Judul | Pemilik | Label | Milestone |
+|---|---|---|---|---|
+| #38 | Menyiapkan kerangka proyek web | Gilbert | `infrastruktur` | Sprint 0 |
+| #39 | Menyiapkan kerangka layanan deteksi AI | Nabil | `ai` | Sprint 0 |
+| #40 | Mengimplementasikan detektor berbasis vision API | Nabil | `ai` | Sprint 1 |
+| #41 | Menyiapkan data tempat awal untuk demo | Nabil | `pencarian` | Sprint 1 |
 
 ## Sprint 0: Fondasi
 
@@ -58,17 +56,17 @@ Setelah dibuat, ganti kode sementara di dokumen ini dengan nomor issue aslinya.
 | Issue | Judul | Pemilik | Prioritas | Bergantung pada | Acuan |
 |---|---|---|---|---|---|
 | #11 | Membuat proyek Supabase dan menerapkan skema basis data | Nayla, direview Gilbert | Inti | - | [03](03-skema-basis-data.md) |
-| N1 | Menyiapkan kerangka proyek web | Gilbert | Inti | - | [01](01-arsitektur.md), bawah |
-| N2 | Menyiapkan kerangka layanan deteksi AI | Nabil | Inti | - | [08](08-pipeline-ai.md) |
+| #38 | Menyiapkan kerangka proyek web | Gilbert | Inti | - | [01](01-arsitektur.md), bawah |
+| #39 | Menyiapkan kerangka layanan deteksi AI | Nabil | Inti | - | [08](08-pipeline-ai.md) |
 | #8 | Menyusun panduan visual dan komponen antarmuka | Nayla | Inti | - | [07](07-panduan-antarmuka.md) |
-| #24 | Mengumpulkan dan menganotasi dataset foto | Nabil | Inti, berlanjut sampai akhir Sprint 1 | - | [08](08-pipeline-ai.md) |
+| #24 | Mengumpulkan dan menganotasi dataset foto | Nabil | Inti, berlanjut sampai akhir Sprint 1 sehingga milestone-nya Sprint 1 | - | [08](08-pipeline-ai.md) |
 
 Tugas project manager di Sprint 0, tanpa issue:
 
-- Membuat issue N1 sampai N4.
-- Membuat milestone `Sprint 0` sampai `Sprint 3` dengan tanggal selesai sesuai jadwal, lalu memasang milestone ke setiap issue.
-- Mengaktifkan proteksi branch `main` sesuai [Konvensi Kerja](02-konvensi-kerja.md#proteksi-branch-main).
-- Menetapkan akun ketiga anggota sebagai moderator setelah #11 selesai, untuk keperluan pengujian.
+- [x] Membuat issue #38 sampai #41.
+- [x] Membuat milestone `Sprint 0` sampai `Sprint 3` dengan tanggal selesai sesuai jadwal, lalu memasang milestone ke setiap issue.
+- [x] Mengaktifkan proteksi branch `main` sesuai [Konvensi Kerja](02-konvensi-kerja.md#proteksi-branch-main).
+- [ ] Menetapkan akun ketiga anggota sebagai moderator setelah #11 selesai, untuk keperluan pengujian.
 
 ## Sprint 1: MVP
 
@@ -78,13 +76,13 @@ Tugas project manager di Sprint 0, tanpa issue:
 
 | Issue | Judul | Pemilik | Prioritas | Bergantung pada | Acuan |
 |---|---|---|---|---|---|
-| #12 | Menyiapkan deployment otomatis frontend dan layanan AI | Nayla | Inti | N1, N2 | [01](01-arsitektur.md) |
-| #13 | Mengimplementasikan pendaftaran, login, dan logout | Gilbert | Inti | N1, #11 | [04](04-kontrak-api.md), [07](07-panduan-antarmuka.md) |
+| #12 | Menyiapkan deployment otomatis frontend dan layanan AI | Nayla | Inti | #38, #39 | [01](01-arsitektur.md) |
+| #13 | Mengimplementasikan pendaftaran, login, dan logout | Gilbert | Inti | #38, #11 | [04](04-kontrak-api.md), [07](07-panduan-antarmuka.md) |
 | #15 | Menerapkan pembedaan hak akses antar peran | Gilbert | Inti | #11 | [03](03-skema-basis-data.md) |
-| #16 | Mengintegrasikan sumber data tempat dari OpenStreetMap | Gilbert | Inti | N1, #11 | [04](04-kontrak-api.md) |
+| #16 | Mengintegrasikan sumber data tempat dari OpenStreetMap | Gilbert | Inti | #38, #11 | [04](04-kontrak-api.md) |
 | #14 | Membuat formulir profil kebutuhan aksesibilitas | Nayla | Inti | #13 | [04](04-kontrak-api.md), [07](07-panduan-antarmuka.md) |
 | #17 | Membangun halaman pencarian beserta peta interaktif | Nayla | Inti | #8. Kontrak #16 cukup untuk mulai | [04](04-kontrak-api.md), [07](07-panduan-antarmuka.md) |
-| N3 | Mengimplementasikan detektor berbasis vision API | Nabil | Inti | N2 | [04](04-kontrak-api.md), [08](08-pipeline-ai.md) |
+| #40 | Mengimplementasikan detektor berbasis vision API | Nabil | Inti | #39 | [04](04-kontrak-api.md), [08](08-pipeline-ai.md) |
 
 ### Minggu kedua, 28 September sampai 4 Oktober
 
@@ -94,10 +92,10 @@ Tugas project manager di Sprint 0, tanpa issue:
 | #20 | Membuat formulir laporan fasilitas beserta unggah foto | Nayla | Inti | #11, #13 | [04](04-kontrak-api.md), [07](07-panduan-antarmuka.md) |
 | #30 | Mengimplementasikan perhitungan Accessibility Confidence | Gilbert | Inti | #11 | [05](05-algoritma-penilaian.md) |
 | #29 | Merumuskan dan mengimplementasikan algoritma skor kesesuaian | Gilbert | Inti | #14 | [05](05-algoritma-penilaian.md) |
-| #27 | Mengintegrasikan hasil deteksi ke alur unggah foto | Gilbert, berpasangan dengan Nabil | Inti | N3, #20 | [04](04-kontrak-api.md) |
+| #27 | Mengintegrasikan hasil deteksi ke alur unggah foto | Gilbert, berpasangan dengan Nabil | Inti | #40, #20 | [04](04-kontrak-api.md) |
 | #21 | Mengimplementasikan verifikasi setuju dan sanggah | Gilbert | Inti | #20, #30 | [04](04-kontrak-api.md) |
 | #31 | Menampilkan rincian penilaian pada antarmuka | Nayla | Inti | Kontrak #29 cukup untuk mulai | [05](05-algoritma-penilaian.md), [07](07-panduan-antarmuka.md) |
-| N4 | Menyiapkan data tempat awal untuk demo | Nabil | Geser | #16 | Bawah |
+| #41 | Menyiapkan data tempat awal untuk demo | Nabil | Geser | #16 | Bawah |
 | #18 | Menambahkan pencarian berbasis lokasi, penyaringan, dan pengurutan | Gilbert | Geser | #16, #29 | [04](04-kontrak-api.md) |
 | #22 | Membangun halaman riwayat kontribusi pengguna | Nayla | Geser | #20, #21 | [04](04-kontrak-api.md), [07](07-panduan-antarmuka.md) |
 
@@ -105,7 +103,7 @@ Tugas project manager di Sprint 0, tanpa issue:
 
 Gilbert memegang tujuh issue inti, paling banyak di antara anggota. Untuk menjaga jadwal:
 
-- #27 dikerjakan berpasangan dengan Nabil, karena Nabil menguasai sisi layanan AI dari N3.
+- #27 dikerjakan berpasangan dengan Nabil, karena Nabil menguasai sisi layanan AI dari #40.
 - Nayla dan Gilbert tidak saling menunggu. Halaman dibangun berdasarkan kontrak di [Kontrak API](04-kontrak-api.md) dengan data tiruan, lalu disambungkan saat endpoint selesai.
 - Pada sinkronisasi Kamis 1 Oktober, jika lebih dari dua issue inti Gilbert belum masuk In review, #18 dan #22 otomatis pindah ke Sprint 2 dan Nabil mengambil alih #21.
 
@@ -133,8 +131,8 @@ Sprint 1 dinyatakan berhasil jika skenario berikut berjalan mulus di URL produks
 | Issue | Judul | Pemilik | Prioritas | Bergantung pada | Acuan |
 |---|---|---|---|---|---|
 | #25 | Melatih model deteksi menggunakan transfer learning | Nabil | Inti | #24 | [08](08-pipeline-ai.md) |
-| #26 | Membungkus model ke dalam layanan FastAPI | Nabil | Inti | #25, N2 | [04](04-kontrak-api.md), [08](08-pipeline-ai.md) |
-| #28 | Membandingkan akurasi model sendiri dengan vision API | Nabil | Inti | #25, N3 | [08](08-pipeline-ai.md) |
+| #26 | Membungkus model ke dalam layanan FastAPI | Nabil | Inti | #25, #39 | [04](04-kontrak-api.md), [08](08-pipeline-ai.md) |
+| #28 | Membandingkan akurasi model sendiri dengan vision API | Nabil | Inti | #25, #40 | [08](08-pipeline-ai.md) |
 | #23 | Membangun halaman moderasi untuk laporan bermasalah | Gilbert | Inti | #21, #27 | [04](04-kontrak-api.md) |
 | #32 | Menulis pengujian unit dan pengujian integrasi | Gilbert | Inti | - | Bawah |
 | #33 | Melakukan audit aksesibilitas antarmuka | Nayla | Inti | #17, #19, #20 | [07](07-panduan-antarmuka.md) |
@@ -176,7 +174,7 @@ Tidak ada pekerjaan terjadwal. Repositori hanya menerima perbaikan untuk bug yan
 
 ## Kriteria penerimaan issue di dokumen ini
 
-### N1 Menyiapkan kerangka proyek web
+### #38 Menyiapkan kerangka proyek web
 
 - [ ] Proyek Next.js dengan TypeScript, Tailwind CSS, ESLint, dan App Router dibuat di folder `web/` memakai npm.
 - [ ] Struktur folder `src/` sesuai [Arsitektur Sistem](01-arsitektur.md#struktur-repositori).
@@ -187,7 +185,7 @@ Tidak ada pekerjaan terjadwal. Repositori hanya menerima perbaikan untuk bug yan
 - [ ] `web/.gitignore` mengabaikan `node_modules/`, `.next/`, dan `.env*.local`.
 - [ ] Workflow CI hijau dengan job frontend benar-benar menjalankan lint, test, dan build, bukan dilewati.
 
-### N4 Menyiapkan data tempat awal untuk demo
+### #41 Menyiapkan data tempat awal untuk demo
 
 - [ ] Minimal 15 tempat di lingkungan kampus UGM diimpor lewat `POST /api/tempat/impor`.
 - [ ] Minimal 5 tempat memiliki laporan untuk setiap fasilitas yang bisa diamati langsung, lengkap dengan foto yang diambil sendiri di lokasi.
