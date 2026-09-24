@@ -1,24 +1,40 @@
+from collections.abc import AsyncIterator
+from contextlib import asynccontextmanager
+from functools import lru_cache
 from typing import Annotated
 
 from fastapi import Depends, FastAPI, Header, HTTPException, Request
 from fastapi.responses import JSONResponse
 
-from app.detektor import Detektor, DetektorSementara
+from app.detektor import Detektor, buat_detektor
 from app.foto import unduh_foto
 from app.galat import GalatAplikasi
 from app.konfigurasi import Pengaturan, ambil_pengaturan
 from app.skema import HasilDeteksi, Kesehatan, PermintaanDeteksi
 
-app = FastAPI(title="Layanan Deteksi Aksesin")
+
+@lru_cache
+def detektor_untuk(mode: str) -> Detektor:
+    return buat_detektor(mode)
 
 
-def ambil_detektor() -> Detektor:
-    return DetektorSementara()
+@asynccontextmanager
+async def daur_hidup(app: FastAPI) -> AsyncIterator[None]:
+    detektor_untuk(ambil_pengaturan().mode_deteksi)
+    yield
 
+
+app = FastAPI(title="Layanan Deteksi Aksesin", lifespan=daur_hidup)
 
 PengaturanTerpakai = Annotated[Pengaturan, Depends(ambil_pengaturan)]
-DetektorTerpakai = Annotated[Detektor, Depends(ambil_detektor)]
 KunciApi = Annotated[str | None, Header(alias="X-Api-Key")]
+
+
+def ambil_detektor(pengaturan: PengaturanTerpakai) -> Detektor:
+    return detektor_untuk(pengaturan.mode_deteksi)
+
+
+DetektorTerpakai = Annotated[Detektor, Depends(ambil_detektor)]
 
 
 @app.exception_handler(HTTPException)
