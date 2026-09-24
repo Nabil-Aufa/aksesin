@@ -16,6 +16,7 @@ Folder ini sengaja dikecualikan dari GitHub Page, sehingga hanya terbaca lewat r
 | 6 | [Rencana Sprint](06-rencana-sprint.md) | Jadwal, pembagian issue per sprint, prioritas, dependensi |
 | 7 | [Panduan Antarmuka](07-panduan-antarmuka.md) | Warna, tipografi, komponen, standar aksesibilitas antarmuka |
 | 8 | [Pipeline AI](08-pipeline-ai.md) | Dataset, anotasi, pelatihan, evaluasi, perbandingan dengan vision API |
+| 9 | [Panduan Penyiapan Azure](09-panduan-azure.md) | Pemeriksaan subscription, pembuatan resource group proyek, dan pemberian akses anggota |
 | - | [Proposal Aksesin](Aksesin_proposal_edited.md) | Latar belakang, fitur, analisis kompetitor |
 
 ## Urutan baca per peran
@@ -25,7 +26,7 @@ Semua anggota membaca dokumen 1, 2, dan 6 terlebih dahulu. Setelah itu:
 | Anggota | Peran | Dokumen utama |
 |---|---|---|
 | Nabil Aufa Danaputra | Project manager, AI engineer | 4 (bagian layanan AI), 8 |
-| Nayla Thalita | UI/UX, cloud engineer | 3, 7, lalu 4 untuk halaman yang memanggil API |
+| Nayla Thalita | UI/UX, cloud engineer | 9, 3, 7, lalu 4 untuk halaman yang memanggil API |
 | Gilbert S. H. Nainggolan | Software engineer | 3, 4, 5 |
 
 ## Cara memakai dokumen saat mengerjakan issue
@@ -49,3 +50,4 @@ Keputusan berikut sudah disepakati. Perubahan terhadap salah satunya harus dibah
 | 17 Sep 2026 | Skor kesesuaian memakai syarat wajib dan bobot | Tempat yang tidak dapat dimasuki tidak boleh mendapat skor tinggi |
 | 17 Sep 2026 | Target pengembangan selesai 15 November 2026 | Menyisakan jeda sekitar tiga minggu sebelum UAS Desember |
 | 17 Sep 2026 | Komentar kode hanya untuk hal yang tidak dapat dijelaskan lewat nama | Kode harus terbaca dari penamaan |
+| 24 Sep 2026 | Seluruh komponen di-deploy ke Microsoft Azure | Mengikuti platform yang dipakai pada praktikum, dan tagihan ditanggung departemen |
