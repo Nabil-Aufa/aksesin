@@ -92,6 +92,16 @@ jobs:
         working-directory: web
         run: npm run lint --if-present
 
+      - name: Jalankan lint
+        if: steps.cek.outputs.ada == 'true'
+        working-directory: web
+        run: npm run lint --if-present
+
+      - name: Jalankan pengujian
+        if: steps.cek.outputs.ada == 'true'
+        working-directory: web
+        run: npm test
+
       - name: Jalankan build
         if: steps.cek.outputs.ada == 'true'
         working-directory: web
