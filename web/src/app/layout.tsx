@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Aksesin",
-  description: "Aplikasi Aksesin Cocok untuk Top Global Fanny se-Indonesia",
+  description: "Temukan tempat yang sesuai dengan kebutuhan aksesibilitasmu",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
