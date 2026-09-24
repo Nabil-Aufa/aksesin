@@ -432,6 +432,12 @@ Tanpa autentikasi. Dipakai Railway untuk health check.
 { "status": "ok", "mode": "vision_api", "versiModel": "vision-api:nama-model" }
 ```
 
+`mode` berisi nilai `MODE_DETEKSI` yang sedang aktif, yaitu `sementara`, `vision_api`, atau `yolo`. Nilai `sementara` berarti layanan berjalan tetapi belum memiliki detektor sungguhan, sehingga `deteksi` selalu kosong.
+
+```json
+{ "status": "ok", "mode": "sementara", "versiModel": "sementara-v0" }
+```
+
 ### POST /deteksi
 
 Header wajib `X-Api-Key` bernilai sama dengan `API_KEY`.

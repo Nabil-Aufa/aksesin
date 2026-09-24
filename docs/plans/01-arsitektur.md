@@ -67,7 +67,7 @@ Skor kesesuaian dihitung di aplikasi web karena bergantung pada profil pengguna 
 
 ### 4. Beralih dari vision API ke model sendiri
 
-Layanan AI memiliki satu antarmuka `POST /deteksi` dengan dua implementasi detektor. Variabel `MODE_DETEKSI` menentukan detektor yang aktif. Saat model sendiri siap di Sprint 2, cukup ubah variabel itu di Railway. Aplikasi web tidak perlu diubah sama sekali.
+Layanan AI memiliki satu antarmuka `POST /deteksi` dengan beberapa implementasi detektor yang dapat dipertukarkan. Variabel `MODE_DETEKSI` menentukan detektor yang aktif. Saat model sendiri siap di Sprint 2, cukup ubah variabel itu di Railway. Aplikasi web tidak perlu diubah sama sekali.
 
 ## Struktur repositori
 
@@ -145,7 +145,7 @@ Nilai asli tidak pernah di-commit. Setiap folder menyediakan `.env.example` beri
 | Variabel | Keterangan |
 |---|---|
 | `API_KEY` | Kunci yang wajib dikirim aplikasi web lewat header `X-Api-Key` |
-| `MODE_DETEKSI` | `vision_api` atau `yolo` |
+| `MODE_DETEKSI` | `sementara`, `vision_api`, atau `yolo`. Nilai `sementara` memakai detektor kosong yang dipakai sebelum detektor sungguhan tersedia |
 | `VISION_API_KEY` | Kunci penyedia vision API |
 | `VISION_API_MODEL` | Nama model vision yang dipakai |
 | `MODEL_URL` | URL unduhan bobot model YOLO, dipakai saat `MODE_DETEKSI=yolo` |
