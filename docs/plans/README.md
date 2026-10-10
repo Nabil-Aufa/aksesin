@@ -49,3 +49,4 @@ Keputusan berikut sudah disepakati. Perubahan terhadap salah satunya harus dibah
 | 17 Sep 2026 | Skor kesesuaian memakai syarat wajib dan bobot | Tempat yang tidak dapat dimasuki tidak boleh mendapat skor tinggi |
 | 17 Sep 2026 | Target pengembangan selesai 15 November 2026 | Menyisakan jeda sekitar tiga minggu sebelum UAS Desember |
 | 17 Sep 2026 | Komentar kode hanya untuk hal yang tidak dapat dijelaskan lewat nama | Kode harus terbaca dari penamaan |
+| 10 Okt 2026 | Dataset AI disusun dari tiga dataset publik berlisensi terbuka, tanpa foto sendiri | Pengumpulan dan pelabelan foto sendiri terlalu lama untuk jadwal proyek |
