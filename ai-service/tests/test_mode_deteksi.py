@@ -15,8 +15,8 @@ def test_mode_yang_belum_tersedia_ditolak() -> None:
         buat_detektor("yolo")
 
 
-def test_daftar_mode_berisi_sementara() -> None:
-    assert "sementara" in DETEKTOR_TERSEDIA
+def test_daftar_mode_berisi_sementara_dan_gabungan() -> None:
+    assert {"sementara", "gabungan"} <= set(DETEKTOR_TERSEDIA)
 
 
 def test_mode_tidak_dikenal_menggagalkan_layanan_saat_mulai(

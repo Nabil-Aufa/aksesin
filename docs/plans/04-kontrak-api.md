@@ -426,13 +426,13 @@ Base URL diambil dari `AI_SERVICE_URL`. Hanya dipanggil oleh server aplikasi web
 
 ### GET /kesehatan
 
-Tanpa autentikasi. Dipakai Railway untuk health check.
+Tanpa autentikasi. Dipakai hosting layanan AI untuk health check.
 
 ```json
-{ "status": "ok", "mode": "vision_api", "versiModel": "vision-api:nama-model" }
+{ "status": "ok", "mode": "gabungan", "versiModel": "aksesin-gabungan-v1" }
 ```
 
-`mode` berisi nilai `MODE_DETEKSI` yang sedang aktif, yaitu `sementara`, `vision_api`, atau `yolo`. Nilai `sementara` berarti layanan berjalan tetapi belum memiliki detektor sungguhan, sehingga `deteksi` selalu kosong.
+`mode` berisi nilai `MODE_DETEKSI` yang sedang aktif, yaitu `sementara` atau `gabungan`. Nilai `sementara` berarti layanan berjalan tetapi belum memiliki detektor sungguhan, sehingga `deteksi` selalu kosong.
 
 ```json
 { "status": "ok", "mode": "sementara", "versiModel": "sementara-v0" }
@@ -450,7 +450,7 @@ Respons 200:
 
 ```json
 {
-  "versiModel": "yolo11n-aksesin-v1",
+  "versiModel": "aksesin-gabungan-v1",
   "lebarFoto": 1920,
   "tinggiFoto": 1080,
   "deteksi": [
@@ -472,7 +472,8 @@ Aturan:
 - `label` hanya salah satu dari `ramp`, `tangga`, `pintu`, `toilet_aksesibel`.
 - Hanya deteksi dengan keyakinan minimal `AMBANG_KEYAKINAN` yang dikembalikan.
 - `deteksi` berupa array kosong jika tidak ada objek, bukan galat.
-- Kedua mode detektor wajib menghasilkan bentuk respons yang sama persis. Pada mode vision API, `bbox` wajib tetap diisi. Jika penyedia tidak mengembalikan kotak pembatas, deteksi itu dibuang.
+- Setiap mode detektor wajib menghasilkan bentuk respons yang sama persis, termasuk `bbox` yang selalu terisi.
+- Mode `gabungan` menilai keempat kelas pada setiap foto, sehingga paling banyak ada satu deteksi per kelas. `keyakinan` adalah peluang hasil kalibrasi, bukan skor mentah model.
 - Format galat layanan AI sama dengan format galat aplikasi web.
 
 ## Kriteria penerimaan

@@ -1,0 +1,145 @@
+{
+  "versi_model": "aksesin-gabungan-v1",
+  "kelas": {
+    "ramp": {
+      "jumlah_foto": 754,
+      "berisi_objek": 129,
+      "auc": 0.8196,
+      "ambang_0.5": {
+        "presisi": 0.3608,
+        "recall": 0.7132,
+        "matriks": {
+          "tp": 92,
+          "fp": 163,
+          "fn": 37,
+          "tn": 462
+        }
+      },
+      "ambang_0.6": {
+        "presisi": 0.4746,
+        "recall": 0.6512,
+        "matriks": {
+          "tp": 84,
+          "fp": 93,
+          "fn": 45,
+          "tn": 532
+        }
+      },
+      "ambang_0.7": {
+        "presisi": 0.5963,
+        "recall": 0.5039,
+        "matriks": {
+          "tp": 65,
+          "fp": 44,
+          "fn": 64,
+          "tn": 581
+        }
+      }
+    },
+    "tangga": {
+      "jumlah_foto": 1381,
+      "berisi_objek": 781,
+      "auc": 0.9503,
+      "ambang_0.5": {
+        "presisi": 0.8862,
+        "recall": 0.8771,
+        "matriks": {
+          "tp": 685,
+          "fp": 88,
+          "fn": 96,
+          "tn": 512
+        }
+      },
+      "ambang_0.6": {
+        "presisi": 0.9156,
+        "recall": 0.8476,
+        "matriks": {
+          "tp": 662,
+          "fp": 61,
+          "fn": 119,
+          "tn": 539
+        }
+      },
+      "ambang_0.7": {
+        "presisi": 0.9336,
+        "recall": 0.7926,
+        "matriks": {
+          "tp": 619,
+          "fp": 44,
+          "fn": 162,
+          "tn": 556
+        }
+      }
+    },
+    "pintu": {
+      "jumlah_foto": 569,
+      "berisi_objek": 329,
+      "auc": 0.9813,
+      "ambang_0.5": {
+        "presisi": 0.963,
+        "recall": 0.9483,
+        "matriks": {
+          "tp": 312,
+          "fp": 12,
+          "fn": 17,
+          "tn": 228
+        }
+      },
+      "ambang_0.6": {
+        "presisi": 0.9654,
+        "recall": 0.9331,
+        "matriks": {
+          "tp": 307,
+          "fp": 11,
+          "fn": 22,
+          "tn": 229
+        }
+      },
+      "ambang_0.7": {
+        "presisi": 0.9674,
+        "recall": 0.9027,
+        "matriks": {
+          "tp": 297,
+          "fp": 10,
+          "fn": 32,
+          "tn": 230
+        }
+      }
+    },
+    "toilet_aksesibel": {
+      "jumlah_foto": 1446,
+      "berisi_objek": 60,
+      "auc": 0.9843,
+      "ambang_0.5": {
+        "presisi": 0.5657,
+        "recall": 0.9333,
+        "matriks": {
+          "tp": 56,
+          "fp": 43,
+          "fn": 4,
+          "tn": 1343
+        }
+      },
+      "ambang_0.6": {
+        "presisi": 0.6222,
+        "recall": 0.9333,
+        "matriks": {
+          "tp": 56,
+          "fp": 34,
+          "fn": 4,
+          "tn": 1352
+        }
+      },
+      "ambang_0.7": {
+        "presisi": 0.7051,
+        "recall": 0.9167,
+        "matriks": {
+          "tp": 55,
+          "fp": 23,
+          "fn": 5,
+          "tn": 1363
+        }
+      }
+    }
+  }
+}

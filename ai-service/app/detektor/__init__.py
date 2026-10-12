@@ -1,8 +1,10 @@
 from app.detektor.dasar import Detektor
+from app.detektor.gabungan import DetektorGabungan
 from app.detektor.sementara import DetektorSementara
 
 DETEKTOR_TERSEDIA: dict[str, type[Detektor]] = {
     "sementara": DetektorSementara,
+    "gabungan": DetektorGabungan,
 }
 
 
@@ -13,4 +15,10 @@ def buat_detektor(mode: str) -> Detektor:
     return DETEKTOR_TERSEDIA[mode]()
 
 
-__all__ = ["DETEKTOR_TERSEDIA", "Detektor", "DetektorSementara", "buat_detektor"]
+__all__ = [
+    "DETEKTOR_TERSEDIA",
+    "Detektor",
+    "DetektorGabungan",
+    "DetektorSementara",
+    "buat_detektor",
+]
