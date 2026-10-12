@@ -10,7 +10,7 @@ Aksesin terdiri atas tiga bagian yang di-deploy terpisah:
 |---|---|---|---|
 | Aplikasi web | Next.js, TypeScript, Tailwind CSS | Antarmuka pengguna, API internal, perhitungan skor kesesuaian | Vercel |
 | Supabase | PostgreSQL dengan PostGIS, Auth, Storage | Penyimpanan data, autentikasi, hak akses baris, foto, perhitungan confidence | Supabase Cloud, region Singapura |
-| Layanan deteksi AI | FastAPI, PyTorch | Mendeteksi elemen aksesibilitas pada foto | Railway |
+| Layanan deteksi AI | FastAPI, PyTorch, Transformers | Mendeteksi elemen aksesibilitas pada foto | Azure Container Apps |
 
 Layanan pihak ketiga yang dipakai:
 
@@ -19,7 +19,7 @@ Layanan pihak ketiga yang dipakai:
 | Nominatim | Mencari tempat berdasarkan nama atau alamat | Maksimal 1 permintaan per detik, wajib mengirim header `User-Agent` yang mengidentifikasi aplikasi, hasil wajib disimpan agar tidak dicari berulang |
 | Overpass API | Mengambil tag aksesibilitas OpenStreetMap suatu tempat | Dipanggil hanya saat tempat diimpor pertama kali, bukan setiap kali halaman dibuka |
 | Tile OpenStreetMap | Peta di halaman pencarian | Wajib menampilkan atribusi "© OpenStreetMap contributors" |
-| Vision API | Detektor awal sebelum model sendiri siap, lalu menjadi pembanding | Penyedia ditentukan di issue kerangka layanan AI, kunci API hanya disimpan di layanan AI |
+| Hugging Face Hub | Sumber bobot pralatih DINOv2 dan OWL-ViT | Diunduh sekali saat image Docker dibangun, bukan saat layanan berjalan |
 
 ## Diagram komponen
 
@@ -28,11 +28,10 @@ flowchart LR
     B[Browser pengguna] -->|HTTPS| W[Aplikasi web Next.js<br/>Vercel]
     B -->|unggah foto langsung| ST[(Supabase Storage)]
     W -->|supabase-js| DB[(PostgreSQL + PostGIS)]
-    W -->|X-Api-Key| AI[Layanan deteksi AI<br/>FastAPI di Railway]
+    W -->|X-Api-Key| AI[Layanan deteksi AI<br/>FastAPI di Azure Container Apps]
     W -->|pencarian| NOM[Nominatim]
     W -->|impor tag| OVP[Overpass API]
     AI -->|unduh foto| ST
-    AI -->|mode vision_api| VAPI[Vision API]
     DB --- AUTH[Supabase Auth]
 ```
 
@@ -65,9 +64,9 @@ Browser tidak pernah memanggil layanan AI, Nominatim, atau Overpass secara langs
 
 Skor kesesuaian dihitung di aplikasi web karena bergantung pada profil pengguna yang sedang membuka halaman. Confidence dihitung di basis data karena harus selalu konsisten setiap kali ada laporan atau verifikasi baru, dari mana pun datangnya perubahan.
 
-### 4. Beralih dari vision API ke model sendiri
+### 4. Mengganti detektor
 
-Layanan AI memiliki satu antarmuka `POST /deteksi` dengan beberapa implementasi detektor yang dapat dipertukarkan. Variabel `MODE_DETEKSI` menentukan detektor yang aktif. Saat model sendiri siap di Sprint 2, cukup ubah variabel itu di Railway. Aplikasi web tidak perlu diubah sama sekali.
+Layanan AI memiliki satu antarmuka `POST /deteksi` dengan beberapa implementasi detektor yang dapat dipertukarkan. Variabel `MODE_DETEKSI` menentukan detektor yang aktif, yaitu `sementara` atau `gabungan`. Mengganti detektor cukup dengan mengubah variabel itu di hosting layanan AI. Aplikasi web tidak perlu diubah sama sekali.
 
 ## Struktur repositori
 
@@ -101,6 +100,7 @@ aksesin/
 │       └── types/
 └── ai-service/
     ├── requirements.txt
+    ├── requirements-model.txt
     ├── Dockerfile
     ├── .env.example
     ├── app/
@@ -109,11 +109,17 @@ aksesin/
     │   ├── skema.py
     │   └── detektor/
     │       ├── dasar.py
-    │       ├── vision_api.py
-    │       └── yolo.py
+    │       ├── sementara.py
+    │       ├── gabungan.py
+    │       ├── fitur.py
+    │       ├── kepala.py
+    │       └── bobot_kepala.json
+    ├── dataset/
+    │   ├── anotasi.jsonl
+    │   └── unduh.py
     ├── pelatihan/
-    │   ├── data.yaml
-    │   └── latih.py
+    │   ├── latih_kepala.py
+    │   └── metrik.json
     └── tests/
 ```
 
@@ -123,11 +129,11 @@ Aturan struktur:
 - Frontend memakai **npm**, bukan pnpm atau yarn, karena CI membutuhkan `web/package-lock.json`.
 - `ai-service/tests/` harus berisi minimal satu pengujian sejak folder dibuat. `pytest` mengembalikan kode keluar 5 jika tidak menemukan pengujian, dan itu membuat CI gagal.
 - Migrasi basis data disimpan di `supabase/migrations/`, bukan dijalankan manual lewat dashboard, supaya skema selalu dapat dibuat ulang.
-- Dataset foto dan bobot model **tidak** disimpan di repositori. Lihat [Pipeline AI](08-pipeline-ai.md).
+- Foto dataset dan bobot model pralatih **tidak** disimpan di repositori. Repositori hanya menyimpan anotasi dan bobot kepala klasifikasi yang berukuran kecil. Lihat [Pipeline AI](08-pipeline-ai.md).
 
 ## Variabel lingkungan
 
-Nilai asli tidak pernah di-commit. Setiap folder menyediakan `.env.example` berisi nama variabel tanpa nilai rahasia. Nilai asli dibagikan antaranggota lewat jalur pribadi dan diisi di dashboard Vercel serta Railway.
+Nilai asli tidak pernah di-commit. Setiap folder menyediakan `.env.example` berisi nama variabel tanpa nilai rahasia. Nilai asli dibagikan antaranggota lewat jalur pribadi dan diisi di dashboard Vercel serta hosting layanan AI.
 
 ### Aplikasi web (`web/.env.local`)
 
@@ -145,10 +151,7 @@ Nilai asli tidak pernah di-commit. Setiap folder menyediakan `.env.example` beri
 | Variabel | Keterangan |
 |---|---|
 | `API_KEY` | Kunci yang wajib dikirim aplikasi web lewat header `X-Api-Key` |
-| `MODE_DETEKSI` | `sementara`, `vision_api`, atau `yolo`. Nilai `sementara` memakai detektor kosong yang dipakai sebelum detektor sungguhan tersedia |
-| `VISION_API_KEY` | Kunci penyedia vision API |
-| `VISION_API_MODEL` | Nama model vision yang dipakai |
-| `MODEL_URL` | URL unduhan bobot model YOLO, dipakai saat `MODE_DETEKSI=yolo` |
+| `MODE_DETEKSI` | `sementara` atau `gabungan`. Nilai `sementara` memakai detektor kosong untuk pengembangan tanpa model, `gabungan` memakai detektor sungguhan |
 | `AMBANG_KEYAKINAN` | Batas bawah keyakinan deteksi yang dikembalikan, bawaan `0.5` |
 
 ## Lingkungan deployment
@@ -157,6 +160,6 @@ Nilai asli tidak pernah di-commit. Setiap folder menyediakan `.env.example` beri
 |---|---|---|---|---|
 | Lokal | Anggota menjalankan sendiri | `npm run dev` | `uvicorn app.main:app --reload` | Proyek Supabase bersama |
 | Pratinjau | Setiap pull request | URL pratinjau Vercel otomatis | Layanan produksi | Proyek Supabase bersama |
-| Produksi | Merge ke `main` | Vercel produksi | Railway, deploy otomatis dari `main` | Proyek Supabase bersama |
+| Produksi | Merge ke `main` | Vercel produksi | Azure Container Apps | Proyek Supabase bersama |
 
 Satu proyek Supabase dipakai bersama untuk semua lingkungan supaya kuota gratis cukup. Konsekuensinya, data uji coba harus diberi penanda yang jelas, misalnya nama tempat diawali `[UJI]`, dan dibersihkan sebelum demo.

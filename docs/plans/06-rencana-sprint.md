@@ -7,7 +7,7 @@ Dokumen ini membagi seluruh issue ke dalam sprint beserta pemilik, prioritas, da
 | Fase | Tanggal | Tujuan |
 |---|---|---|
 | Sprint 0 | Kamis 17 Sep sampai Minggu 20 Sep 2026 | Fondasi: basis data, kerangka proyek, panduan visual |
-| Sprint 1 | Senin 21 Sep sampai Minggu 4 Okt 2026 | **MVP utuh** dengan deteksi via vision API |
+| Sprint 1 | Senin 21 Sep sampai Minggu 4 Okt 2026 | **MVP utuh** dengan deteksi AI dari model sumber terbuka |
 | UTS | Senin 5 Okt sampai Minggu 18 Okt 2026 | Tidak ada pekerjaan inti. Pelatihan model berjalan di latar |
 | Sprint 2 | Senin 19 Okt sampai Minggu 1 Nov 2026 | Model AI sendiri, moderasi, pengujian |
 | Sprint 3 | Senin 2 Nov sampai Minggu 15 Nov 2026 | Perbaikan hasil pengujian, rilis final, dokumentasi |
@@ -46,7 +46,7 @@ Empat pekerjaan berikut belum ada di breakdown worksheet dan ditambahkan ke papa
 |---|---|---|---|---|
 | #38 | Menyiapkan kerangka proyek web | Gilbert | `infrastruktur` | Sprint 0 |
 | #39 | Menyiapkan kerangka layanan deteksi AI | Nabil | `ai` | Sprint 0 |
-| #40 | Mengimplementasikan detektor berbasis vision API | Nabil | `ai` | Sprint 1 |
+| #40 | Mengimplementasikan detektor berbasis model sumber terbuka | Nabil | `ai` | Sprint 1 |
 | #41 | Menyiapkan data tempat awal untuk demo | Nabil | `pencarian` | Sprint 1 |
 
 ## Sprint 0: Fondasi
@@ -82,7 +82,7 @@ Tugas project manager di Sprint 0, tanpa issue:
 | #16 | Mengintegrasikan sumber data tempat dari OpenStreetMap | Gilbert | Inti | #38, #11 | [04](04-kontrak-api.md) |
 | #14 | Membuat formulir profil kebutuhan aksesibilitas | Nayla | Inti | #13 | [04](04-kontrak-api.md), [07](07-panduan-antarmuka.md) |
 | #17 | Membangun halaman pencarian beserta peta interaktif | Nayla | Inti | #8. Kontrak #16 cukup untuk mulai | [04](04-kontrak-api.md), [07](07-panduan-antarmuka.md) |
-| #40 | Mengimplementasikan detektor berbasis vision API | Nabil | Inti | #39 | [04](04-kontrak-api.md), [08](08-pipeline-ai.md) |
+| #40 | Mengimplementasikan detektor berbasis model sumber terbuka | Nabil | Inti | #39 | [04](04-kontrak-api.md), [08](08-pipeline-ai.md) |
 
 ### Minggu kedua, 28 September sampai 4 Oktober
 
@@ -121,7 +121,7 @@ Sprint 1 dinyatakan berhasil jika skenario berikut berjalan mulus di URL produks
 
 5 sampai 18 Oktober 2026. Tidak ada issue inti.
 
-- #25 pelatihan model berjalan di latar oleh Nabil, karena sebagian besar waktunya menunggu proses pelatihan selesai.
+- #25 pelatihan kepala klasifikasi berjalan di latar oleh Nabil, karena sebagian besar waktunya menunggu ekstraksi fitur selesai.
 - Hanya perbaikan bug yang merusak skenario demo MVP yang dikerjakan. Fitur baru ditahan sampai Sprint 2.
 
 ## Sprint 2: Model AI sendiri, moderasi, pengujian
@@ -132,7 +132,7 @@ Sprint 1 dinyatakan berhasil jika skenario berikut berjalan mulus di URL produks
 |---|---|---|---|---|---|
 | #25 | Melatih model deteksi menggunakan transfer learning | Nabil | Inti | #24 | [08](08-pipeline-ai.md) |
 | #26 | Membungkus model ke dalam layanan FastAPI | Nabil | Inti | #25, #39 | [04](04-kontrak-api.md), [08](08-pipeline-ai.md) |
-| #28 | Membandingkan akurasi model sendiri dengan vision API | Nabil | Inti | #25, #40 | [08](08-pipeline-ai.md) |
+| #28 | Membandingkan akurasi model siap pakai dengan model hasil transfer learning | Nabil | Inti | #25, #40 | [08](08-pipeline-ai.md) |
 | #23 | Membangun halaman moderasi untuk laporan bermasalah | Gilbert | Inti | #21, #27 | [04](04-kontrak-api.md) |
 | #32 | Menulis pengujian unit dan pengujian integrasi | Gilbert | Inti | - | Bawah |
 | #33 | Melakukan audit aksesibilitas antarmuka | Nayla | Inti | #17, #19, #20 | [07](07-panduan-antarmuka.md) |
@@ -165,11 +165,11 @@ Tidak ada pekerjaan terjadwal. Repositori hanya menerima perbaikan untuk bug yan
 
 | Risiko | Dampak | Mitigasi | Pemantau |
 |---|---|---|---|
-| Dataset kurang atau label tidak konsisten | Akurasi model sendiri rendah | Vision API tetap bisa dipakai di produksi. Laporan #28 tetap bernilai karena menjelaskan perbandingannya | Nabil |
+| Dataset kurang atau label tidak konsisten | Akurasi model sendiri rendah | Kelas yang lemah hanya dipakai sebagai bukti pendukung, tidak untuk membantah laporan. Laporan #28 tetap bernilai karena menjelaskan perbandingannya | Nabil |
 | Gilbert kewalahan di Sprint 1 | MVP tidak utuh sebelum UTS | Pembagian ulang pada sinkronisasi 1 Oktober sesuai catatan beban | Nabil |
 | Sulit mendapat peserta pengguna kursi roda | #34 tidak terlaksana | Mulai menghubungi unit layanan disabilitas kampus atau komunitas disabilitas di Yogyakarta sejak Sprint 1, jadwalkan sesi di minggu pertama Sprint 2 | Nabil |
 | Kuota gratis Supabase habis karena foto | Unggahan gagal | Foto dikompres di browser sebelum diunggah, lihat kriteria #20 | Nayla |
-| Layanan hosting AI memerlukan biaya | Layanan AI mati | Periksa ketentuan kredit dan harga Railway saat #12. Siapkan alternatif hosting kontainer gratis jika kredit tidak mencukupi | Nayla |
+| Layanan hosting AI memerlukan biaya | Layanan AI mati | Pakai kredit Azure for Students. Jika tidak tersedia, jalankan layanan di laptop dengan Cloudflare Tunnel untuk pengujian, lalu Hugging Face Spaces untuk produksi | Nayla |
 | Nominatim memblokir karena terlalu sering dipanggil | Pencarian lokasi baru gagal | Cache 24 jam, penundaan pencarian 500 ms, dan `User-Agent` sesuai kebijakan | Gilbert |
 
 ## Kriteria penerimaan issue di dokumen ini
@@ -197,7 +197,7 @@ Tidak ada pekerjaan terjadwal. Repositori hanya menerima perbaikan untuk bug yan
 - [ ] Seluruh kasus uji di [Algoritma Penilaian](05-algoritma-penilaian.md) tercakup.
 - [ ] Setiap poin kriteria penerimaan #15 memiliki pengujian yang dapat dijalankan ulang.
 - [ ] Endpoint laporan, verifikasi, dan moderasi memiliki pengujian integrasi untuk jalur berhasil dan jalur galat utama.
-- [ ] Layanan AI memiliki pengujian untuk kedua mode detektor dengan detektor tiruan, tanpa memanggil vision API sungguhan.
+- [ ] Layanan AI memiliki pengujian untuk kedua mode detektor dengan pengekstrak fitur tiruan, tanpa memuat model sungguhan.
 - [ ] Seluruh pengujian berjalan di CI.
 
 ### #34 Melakukan pengujian bersama pengguna kursi roda
