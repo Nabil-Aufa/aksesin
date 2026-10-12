@@ -221,7 +221,7 @@ Data yang tidak diperbarui lebih dari enam bulan mulai kehilangan kepercayaan se
 
 | Fitur | Status dilaporkan | Mendukung jika | Bertentangan jika |
 |---|---|---|---|
-| `ramp` | `tersedia` atau `terbatas` | `maksKeyakinan(ramp)` ≥ 0,60 | `maksKeyakinan(ramp)` < 0,50 |
+| `ramp` | `tersedia` atau `terbatas` | `maksKeyakinan(ramp)` ≥ 0,60 | Tidak pernah |
 | `ramp` | `tidak_tersedia` | Tidak pernah | `maksKeyakinan(ramp)` ≥ 0,70 |
 | `toilet_aksesibel` | `tersedia` atau `terbatas` | `maksKeyakinan(toilet_aksesibel)` ≥ 0,60 | `maksKeyakinan(toilet_aksesibel)` < 0,50 |
 | `toilet_aksesibel` | `tidak_tersedia` | Tidak pernah | `maksKeyakinan(toilet_aksesibel)` ≥ 0,70 |
@@ -231,6 +231,8 @@ Data yang tidak diperbarui lebih dari enam bulan mulai kehilangan kepercayaan se
 | `lift`, `parkir_aksesibel` | Apa pun | Tidak pernah | Tidak pernah |
 
 Ketiadaan objek di foto hanya dianggap bukti lemah. Karena itu foto tanpa tangga tidak pernah dianggap mendukung klaim jalur bebas tangga, sedangkan foto yang jelas menunjukkan tangga dianggap bertentangan.
+
+Untuk `ramp`, keyakinan rendah juga tidak pernah dianggap bertentangan dengan laporan bahwa ramp tersedia. Pada pengujian, detektor masih sering melewatkan ramp yang kecil atau warnanya menyatu dengan lantai, sehingga keyakinan rendah lebih sering berarti ramp tidak terlihat jelas daripada ramp tidak ada. Rinciannya ada di [Pipeline AI](08-pipeline-ai.md#evaluasi).
 
 Jika hasilnya bertentangan dan `status_moderasi` laporan masih `aktif`, ubah menjadi `perlu_tinjau`. Laporan berstatus `disetujui` atau `ditolak` tidak diubah, karena keputusan moderator lebih kuat daripada deteksi otomatis.
 
