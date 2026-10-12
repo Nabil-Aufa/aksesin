@@ -13,9 +13,6 @@ class Pengaturan(BaseSettings):
     api_key: str = ""
     mode_deteksi: str = "sementara"
     ambang_keyakinan: float = 0.5
-    vision_api_key: str = ""
-    vision_api_model: str = ""
-    model_url: str = ""
 
 
 @lru_cache
