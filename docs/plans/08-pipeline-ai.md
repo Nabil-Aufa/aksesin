@@ -1,6 +1,8 @@
 # Pipeline AI
 
-Dokumen ini menjelaskan komponen AI Aksesin dari pengumpulan foto sampai model berjalan di produksi. Strateginya hybrid: detektor berbasis vision API dipasang lebih dahulu supaya MVP utuh sebelum UTS, lalu model YOLO hasil pelatihan sendiri menyusul di Sprint 2 dan dibandingkan secara terukur.
+Dokumen ini menjelaskan komponen AI Aksesin dari pengumpulan foto sampai model berjalan di produksi. Strateginya *transfer learning*: dua model visi sumber terbuka yang sudah dilatih pada data berskala besar dipakai sebagai pengekstrak fitur yang dibekukan, lalu kepala klasifikasi kecil dilatih sendiri di atasnya memakai dataset Aksesin. Pendekatan ini tidak memerlukan GPU, tidak memakai layanan berbayar, dan dapat dilatih ulang di laptop.
+
+Rencana awal yang memakai vision API berbayar dan YOLO yang dilatih dari awal diganti pada 10 Oktober 2026. Alasannya dicatat di [README dokumen](README.md#catatan-keputusan).
 
 Issue terkait: #39, #40, #24, #25, #26, #28 (Nabil), #27 (Gilbert dan Nabil).
 
@@ -101,91 +103,125 @@ python dataset/unduh.py ../../aksesin-dataset/dataset-2026-10-10
 
 ## Pelatihan
 
-| Aspek | Pilihan | Alasan |
-|---|---|---|
-| Arsitektur | YOLO varian nano dari Ultralytics, bobot awal pralatih COCO | Cukup ringan untuk inferensi CPU di hosting murah |
-| Ukuran gambar | 640 px | Bawaan dan seimbang antara akurasi dan kecepatan |
-| Epoch | Maksimal 150 dengan penghentian dini kesabaran 30 | Mencegah overfitting pada dataset kecil |
-| Augmentasi | Bawaan Ultralytics | Flip horizontal aman karena keempat kelas simetris secara makna |
-| Lingkungan | GPU gratis Google Colab atau Kaggle | Tidak butuh perangkat khusus |
+### Arsitektur detektor
 
-Catatan lisensi: pustaka Ultralytics berlisensi AGPL-3.0. Pemakaian untuk proyek akademik yang kodenya terbuka di GitHub sesuai dengan lisensi tersebut.
+Detektor `gabungan` menilai keempat kelas pada setiap foto dalam tiga langkah.
 
-Penamaan versi model: `yolo11n-aksesin-v<nomor>`, contoh `yolo11n-aksesin-v1`. Nilai ini dikirim di field `versiModel` dan tersimpan di `ai_detections.versi_model`, sehingga setiap hasil deteksi dapat ditelusuri ke model yang menghasilkannya.
+1. **Pengekstrak fitur yang dibekukan.** Bobot kedua model tidak diubah.
+   - [DINOv2-base](https://huggingface.co/facebook/dinov2-base) (lisensi Apache 2.0) menghasilkan satu vektor untuk seluruh foto. Foto diperkecil ke 224 x 224 piksel, lalu token kelas dan rata-rata token bagian digabung menjadi vektor 1.536 dimensi.
+   - [OWL-ViT base patch32](https://huggingface.co/google/owlvit-base-patch32) (lisensi Apache 2.0) membagi foto menjadi 576 bagian. Setiap bagian memiliki vektor 512 dimensi dan perkiraan kotak pembatas.
+2. **Kepala klasifikasi yang dilatih sendiri.** Kepala klasifikasi berupa regresi logistik dengan bobot kelas seimbang.
+   - Kepala global menilai vektor seluruh foto.
+   - Kepala bagian menilai setiap bagian foto, lalu nilai tertinggi diambil. Kepala ini dilatih dari kotak pembatas di anotasi: bagian dengan IoU minimal 0,4 terhadap kotak acuan menjadi contoh positif, dan 40 bagian acak dengan IoU di bawah 0,1 dari setiap foto menjadi contoh negatif. Kelas `toilet_aksesibel` tidak memiliki kepala bagian karena datasetnya tidak berisi kotak.
+3. **Penggabung.** Regresi logistik kecil menggabungkan nilai kedua kepala menjadi peluang yang terkalibrasi. Penggabung dilatih dari nilai kedua kepala pada foto yang tidak mereka lihat saat dilatih (*out-of-fold*). Karena bobot kelasnya seimbang, peluang 0,5 berarti bukti ada dan tidak adanya objek sama kuat.
 
-Bobot model tidak disimpan di repositori. Unggah sebagai aset GitHub Release dengan tag yang sama dengan nama versinya, lalu isi `MODEL_URL` dengan tautan unduhan aset tersebut.
+Kotak pembatas yang dikembalikan berasal dari bagian dengan nilai kepala bagian tertinggi. Untuk `toilet_aksesibel`, kotak berasal dari bagian yang paling cocok dengan kueri teks OWL-ViT "a toilet with grab bars" dan "a wheelchair accessible toilet".
 
-Setiap putaran pelatihan dicatat di tabel log berikut, di komentar issue #25:
+Model pralatih diunduh dari Hugging Face Hub saat image Docker dibangun. Bobot kepala klasifikasi hanya sekitar 80 KB, sehingga disimpan langsung di `ai-service/app/detektor/bobot_kepala.json`.
 
-| Versi | Tanggal | Versi dataset | Perubahan dari versi sebelumnya | mAP50 | mAP50-95 | Recall `ramp` |
-|---|---|---|---|---|---|---|
+### Menjalankan pelatihan
+
+```bash
+cd ai-service
+pip install torch --index-url https://download.pytorch.org/whl/cpu
+pip install -r pelatihan/requirements.txt
+python -m pelatihan.latih_kepala ../../aksesin-dataset/dataset-2026-10-10
+```
+
+Skrip mengekstrak fitur setiap foto dan menyimpannya di subfolder `fitur`, supaya pelatihan ulang tidak perlu mengekstrak lagi. Setelah itu skrip menjalankan validasi silang lima lipatan, lalu melatih kepala akhir dengan seluruh data. Hasilnya ditulis ke `app/detektor/bobot_kepala.json` dan `pelatihan/metrik.json`. Ekstraksi fitur 1.536 foto memakan waktu sekitar 1,5 jam di CPU laptop.
+
+Penamaan versi model: `aksesin-gabungan-v<nomor>`. Nilai ini dikirim di field `versiModel` dan tersimpan di `ai_detections.versi_model`, sehingga setiap hasil deteksi dapat ditelusuri ke versi kepala klasifikasi yang menghasilkannya.
+
+Setiap putaran pelatihan dicatat di tabel berikut:
+
+| Versi | Tanggal | Versi dataset | Perubahan | AUC `ramp` | AUC `tangga` | AUC `pintu` | AUC `toilet_aksesibel` |
+|---|---|---|---|---|---|---|---|
+| `aksesin-gabungan-v1` | 12 Okt 2026 | `dataset-2026-10-10` | Versi pertama | 0,82 | 0,95 | 0,98 | 0,98 |
 
 ## Evaluasi
 
-Metrik dihitung pada bagian **uji**, yang tidak pernah dipakai selama pelatihan maupun pemilihan model.
+Metrik dihitung dengan validasi silang lima lipatan sesuai field `lipatan`. Setiap foto dinilai oleh kepala klasifikasi yang tidak pernah melihat foto itu saat dilatih. Hanya foto yang label kelasnya bukan `null` yang dihitung.
 
-| Metrik | Target awal |
-|---|---|
-| mAP50 seluruh kelas | ≥ 0,60 |
-| Recall kelas `ramp` | ≥ 0,70 |
-| Recall kelas `tangga` | ≥ 0,70 |
-| Waktu inferensi p95 di hosting produksi | < 3 detik per foto |
+### Hasil `aksesin-gabungan-v1`
 
-Recall `ramp` dan `tangga` diberi target tersendiri karena kedua kelas itu paling menentukan apakah pengguna kursi roda bisa masuk ke suatu tempat. Target ini adalah titik awal, dan boleh direvisi setelah putaran pelatihan pertama jika terbukti tidak realistis untuk ukuran dataset yang ada, dengan alasan dicatat di log.
+| Kelas | Foto | Berisi objek | AUC | Presisi pada 0,6 | Recall pada 0,6 | Presisi pada 0,7 | Recall pada 0,7 |
+|---|---|---|---|---|---|---|---|
+| `ramp` | 754 | 129 | 0,82 | 0,47 | 0,65 | 0,60 | 0,50 |
+| `tangga` | 1.381 | 781 | 0,95 | 0,92 | 0,85 | 0,93 | 0,79 |
+| `pintu` | 569 | 329 | 0,98 | 0,97 | 0,93 | 0,97 | 0,90 |
+| `toilet_aksesibel` | 1.446 | 60 | 0,98 | 0,62 | 0,93 | 0,71 | 0,92 |
+
+Ambang 0,6 dan 0,7 dipakai karena keduanya menjadi batas mendukung dan bertentangan di [Algoritma Penilaian](05-algoritma-penilaian.md#kecocokan-hasil-deteksi-ai). Matriks konfusi lengkap setiap kelas ada di `ai-service/pelatihan/metrik.json`.
+
+Cara membaca hasil:
+
+- `pintu` dan `tangga` dapat diandalkan, baik untuk mendukung maupun membantah laporan.
+- Presisi `toilet_aksesibel` terlihat rendah karena data uji berisi 24 foto tanpa toilet aksesibel untuk setiap satu foto yang berisi. Pada laporan sungguhan, foto toilet biasanya memang memotret toilet, sehingga perbandingannya jauh lebih seimbang. Recall-nya tinggi, sehingga toilet aksesibel jarang terlewat.
+- `ramp` adalah kelas terlemah. Ramp di foto pintu masuk sering kecil, jauh, atau warnanya menyatu dengan lantai. Karena itu, keyakinan rendah untuk `ramp` tidak dipakai untuk membantah laporan pengguna.
+
+### Pembanding tanpa kepala klasifikasi
+
+Sebelum kepala klasifikasi dilatih, model siap pakai dicoba langsung dengan kueri teks (*zero-shot*) pada subset 521 foto. AUC yang diperoleh:
+
+| Kelas | CLIP ViT-B/32 | OWL-ViT base patch32 | `aksesin-gabungan-v1` |
+|---|---|---|---|
+| `ramp` | 0,61 | 0,58 | 0,82 |
+| `tangga` | 0,65 | 0,79 | 0,95 |
+| `pintu` | 0,66 | 0,96 | 0,98 |
+| `toilet_aksesibel` | 0,98 | 0,95 | 0,98 |
+
+Kepala klasifikasi yang dilatih sendiri menaikkan AUC `ramp` dan `tangga` secara berarti, yaitu dua kelas yang paling menentukan apakah pengguna kursi roda dapat masuk ke suatu tempat. Perbandingan lengkap disusun di #28.
+
+### Target
+
+| Metrik | Target | Hasil v1 |
+|---|---|---|
+| AUC `tangga` | ≥ 0,90 | 0,95 |
+| AUC `pintu` | ≥ 0,90 | 0,98 |
+| AUC `toilet_aksesibel` | ≥ 0,90 | 0,98 |
+| AUC `ramp` | ≥ 0,80 | 0,82 |
+| Waktu deteksi per foto di laptop pengembang (Intel Core i5-13420H) | < 3 detik | Sekitar 1,2 detik |
+| Waktu respons p95 di hosting produksi | < 3 detik | Diukur setelah hosting tersedia, lihat #26 |
 
 ## Layanan deteksi
 
 ### Struktur
 
 ```
-ai-service/app/
-├── main.py
-├── konfigurasi.py
-├── skema.py
-└── detektor/
-    ├── dasar.py
-    ├── vision_api.py
-    └── yolo.py
+ai-service/
+├── requirements.txt
+├── requirements-model.txt
+├── app/
+│   ├── main.py
+│   ├── konfigurasi.py
+│   ├── skema.py
+│   └── detektor/
+│       ├── dasar.py
+│       ├── sementara.py
+│       ├── gabungan.py
+│       ├── fitur.py
+│       ├── kepala.py
+│       └── bobot_kepala.json
+├── dataset/
+└── pelatihan/
 ```
 
 - `dasar.py` mendefinisikan antarmuka detektor: menerima gambar dan mengembalikan daftar deteksi dengan label, keyakinan, dan kotak pembatas ternormalisasi.
-- `vision_api.py` dan `yolo.py` masing-masing mengimplementasikan antarmuka itu.
+- `sementara.py` selalu mengembalikan daftar kosong, dipakai saat mengembangkan aplikasi web tanpa memuat model.
+- `gabungan.py` adalah detektor sungguhan. Deteksi yang tidak selesai dalam 15 detik menghasilkan `504 DETEKSI_MELEWATI_BATAS_WAKTU`.
+- `fitur.py` memuat DINOv2 dan OWL-ViT, sedangkan `kepala.py` menghitung peluang dari fitur dengan numpy saja.
 - `main.py` memilih detektor sekali saat aplikasi mulai berdasarkan `MODE_DETEKSI`, lalu menyediakan endpoint sesuai [Kontrak API](04-kontrak-api.md#layanan-deteksi-ai).
 
-### Detektor vision API
+### Dependensi
 
-- Meminta penyedia mengembalikan JSON berisi label dari empat kelas, keyakinan, dan kotak pembatas ternormalisasi.
-- Respons divalidasi dengan skema Pydantic. Item dengan label di luar empat kelas, tanpa kotak pembatas, atau dengan koordinat di luar rentang 0 sampai 1 dibuang.
-- Nilai keyakinan dari vision API tidak terkalibrasi seperti keyakinan model deteksi. Hal ini dicatat sebagai keterbatasan dalam perbandingan #28.
+- `requirements.txt` berisi dependensi layanan tanpa PyTorch. CI hanya memasang berkas ini, karena pengujian unit memakai pengekstrak fitur tiruan.
+- `requirements-model.txt` berisi PyTorch dan Transformers. Image Docker memasang PyTorch versi CPU dari indeks resmi PyTorch supaya ukurannya jauh lebih kecil, mengunduh kedua model pralatih saat image dibangun, lalu menyalakan `HF_HUB_OFFLINE=1` sehingga layanan tidak mengunduh apa pun saat berjalan.
+- Layanan memerlukan sekitar 1,5 GB memori. Hosting disarankan memakai minimal 2 vCPU dan 4 GiB memori.
 
-### Detektor YOLO
+## Pengembangan berikutnya
 
-- Bobot diunduh dari `MODEL_URL` sekali saat layanan mulai dan disimpan di memori.
-- Inferensi berjalan di CPU. Image Docker memasang PyTorch versi CPU supaya ukurannya jauh lebih kecil.
-
-## Perbandingan model sendiri dan vision API
-
-Issue #28 menjawab pertanyaan: apakah model buatan sendiri layak menggantikan vision API di produksi?
-
-### Metode
-
-1. Kedua detektor dijalankan pada **bagian uji yang sama**.
-2. Karena kotak pembatas dari vision API kurang dapat diandalkan, perbandingan utama dilakukan di tingkat foto: untuk setiap kelas, apakah detektor menyatakan objek itu ada di foto, dibandingkan dengan label sebenarnya.
-3. Hitung precision, recall, dan F1 per kelas untuk kedua detektor pada tingkat foto.
-4. Hitung mAP50 untuk detektor YOLO saja.
-5. Ukur waktu respons p50 dan p95 lewat endpoint `/deteksi` di hosting produksi, bukan di laptop.
-6. Hitung perkiraan biaya per 1000 foto untuk kedua pendekatan.
-7. Pilih minimal lima contoh foto di mana kedua detektor berbeda pendapat, lalu analisis penyebabnya.
-
-### Aturan keputusan mode produksi
-
-`MODE_DETEKSI=yolo` dipakai di produksi jika **ketiga** syarat terpenuhi:
-
-- F1 tingkat foto untuk `ramp` dan `tangga` tidak lebih rendah dari vision API dikurangi 0,05.
-- Waktu respons p95 memenuhi target di bagian evaluasi.
-- Tidak ada kelas dengan recall tingkat foto di bawah 0,50.
-
-Jika tidak, produksi tetap memakai vision API dan model sendiri dilaporkan sebagai hasil eksperimen beserta analisis kekurangannya. Kedua hasil sama-sama sah untuk laporan akhir, asalkan keputusannya berbasis data.
+- Menambah contoh ramp, misalnya dari [RampNet](https://huggingface.co/datasets/projectsidewalk/rampnet-dataset) (lisensi MIT) atau dari foto laporan pengguna yang sudah diverifikasi, lalu melatih ulang kepala klasifikasi.
+- Menambah foto dari Indonesia supaya bentuk fasilitas setempat ikut terwakili.
 
 ## Kriteria penerimaan
 
@@ -199,15 +235,13 @@ Jika tidak, produksi tetap memakai vision API dan model sendiri dilaporkan sebag
 - [ ] Minimal satu pengujian di `ai-service/tests/`, sehingga `pytest` tidak berhenti dengan kode keluar 5.
 - [ ] `ruff check .` bersih dan job CI layanan AI hijau dengan langkah lint dan uji benar-benar berjalan.
 
-### #40 Mengimplementasikan detektor berbasis vision API
+### #40 Mengimplementasikan detektor berbasis model sumber terbuka
 
-- [ ] Penyedia vision API dipilih, dengan alasan pemilihan dan perkiraan biaya dicatat di komentar issue.
-- [ ] Detektor mengembalikan bentuk respons yang sama persis dengan kontrak.
-- [ ] Item tidak valid dibuang sesuai aturan detektor vision API.
+- [ ] Detektor `gabungan` mengembalikan bentuk respons yang sama persis dengan kontrak, termasuk `bbox` untuk setiap deteksi.
 - [ ] Batas waktu 15 detik menghasilkan `504 DETEKSI_MELEWATI_BATAS_WAKTU`.
-- [ ] Pengujian unit memakai respons penyedia tiruan, tanpa memanggil layanan sungguhan.
-- [ ] Uji coba manual pada 20 foto contoh dicatat di komentar issue: jumlah deteksi benar, salah, dan terlewat per kelas.
-- [ ] `VISION_API_KEY` hanya ada di layanan AI dan tidak pernah dikirim ke aplikasi web.
+- [ ] Pengujian unit memakai pengekstrak fitur tiruan, sehingga CI tidak memasang PyTorch dan tidak mengunduh model.
+- [ ] Image Docker memuat model pralatih saat dibangun, dan `GET /kesehatan` menampilkan mode `gabungan` beserta versi kepala klasifikasi.
+- [ ] Uji coba manual `POST /deteksi` dengan foto sungguhan berhasil di laptop pengembang.
 
 ### #24 Mengumpulkan dan menganotasi dataset foto fasilitas aksesibilitas
 
@@ -220,21 +254,21 @@ Jika tidak, produksi tetap memakai vision API dan model sendiri dilaporkan sebag
 
 ### #25 Melatih model deteksi menggunakan transfer learning
 
-- [ ] Skrip pelatihan di `ai-service/pelatihan/` dapat dijalankan ulang dan menghasilkan model dengan konfigurasi yang sama.
-- [ ] Log pelatihan diisi untuk setiap putaran.
-- [ ] Metrik akhir pada bagian uji dilaporkan per kelas, beserta confusion matrix.
-- [ ] Bobot model final diunggah sebagai aset GitHub Release dengan nama versi yang benar.
+- [ ] Skrip `ai-service/pelatihan/latih_kepala.py` dapat dijalankan ulang dan menghasilkan bobot kepala klasifikasi dengan konfigurasi yang sama.
+- [ ] Log pelatihan di dokumen ini diisi untuk setiap putaran.
+- [ ] Metrik validasi silang dilaporkan per kelas beserta matriks konfusi di `ai-service/pelatihan/metrik.json`.
+- [ ] Bobot kepala klasifikasi tersimpan di `ai-service/app/detektor/bobot_kepala.json` dengan nama versi yang benar.
 
 ### #26 Membungkus model ke dalam layanan FastAPI
 
-- [ ] Detektor YOLO mengimplementasikan antarmuka yang sama dengan detektor vision API.
-- [ ] Mengganti `MODE_DETEKSI` dari `vision_api` ke `yolo` di Railway tidak memerlukan perubahan apa pun di aplikasi web.
+- [ ] Detektor `gabungan` mengimplementasikan antarmuka yang sama dengan detektor `sementara`.
+- [ ] Mengganti `MODE_DETEKSI` di hosting layanan AI tidak memerlukan perubahan apa pun di aplikasi web.
 - [ ] `GET /kesehatan` menampilkan mode dan versi model yang sedang aktif.
-- [ ] Waktu respons p95 memenuhi target di bagian evaluasi, diukur di Railway.
+- [ ] Waktu respons p95 memenuhi target di bagian evaluasi, diukur di hosting produksi.
 - [ ] Pengujian unit memakai model tiruan dan tidak mengunduh bobot sungguhan.
 
-### #28 Membandingkan akurasi model sendiri dengan layanan vision API
+### #28 Membandingkan akurasi model siap pakai dengan model hasil transfer learning
 
-- [ ] Seluruh langkah metode perbandingan dijalankan.
-- [ ] Hasil disusun dalam dokumen perbandingan berisi tabel metrik kedua detektor, waktu respons, biaya, dan analisis contoh foto.
-- [ ] Keputusan mode produksi diambil berdasarkan aturan keputusan dan dicatat di [README dokumen](README.md#catatan-keputusan).
+- [ ] Model siap pakai (CLIP dan OWL-ViT dengan kueri teks) dan `aksesin-gabungan-v1` dievaluasi pada foto dan lipatan yang sama.
+- [ ] Hasil disusun dalam dokumen perbandingan berisi AUC, presisi, dan recall per kelas, waktu respons, kebutuhan memori, dan analisis minimal lima contoh foto yang dinilai berbeda.
+- [ ] Keputusan model produksi dicatat di [README dokumen](README.md#catatan-keputusan).
