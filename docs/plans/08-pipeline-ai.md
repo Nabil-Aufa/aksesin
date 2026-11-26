@@ -38,42 +38,66 @@ Aturan tambahan:
 
 ## Dataset
 
-### Target
-
-| Aspek | Target minimum |
-|---|---|
-| Objek per kelas | 150 kotak |
-| Total foto | 600 foto |
-| Jumlah lokasi berbeda | 40 lokasi |
-| Foto tanpa objek | Sekitar 10% |
-
 ### Sumber
 
-1. **Foto sendiri** di lingkungan kampus UGM dan tempat umum di Yogyakarta. Ini sumber utama, karena bentuk ramp, pintu, dan toilet di Indonesia bisa berbeda dari dataset luar negeri. Foto yang diambil untuk data demo di #41 sekaligus dipakai di sini.
-2. **Dataset publik** sebagai tambahan, hanya jika lisensinya mengizinkan pemakaian untuk riset atau pendidikan. Catat nama dataset, tautan, dan lisensinya. Referensi awal ada di daftar pustaka proposal, seperti Project Sidewalk dan RampNet untuk landaian trotoar.
+Sejak 10 Oktober 2026, dataset disusun dari tiga dataset publik berlisensi terbuka, tidak lagi dari foto yang diambil sendiri. Pengumpulan dan pelabelan foto sendiri terlalu lama untuk jadwal proyek, sedangkan dataset publik berikut sudah berlabel dan lisensinya mengizinkan pemakaian ulang dengan atribusi.
 
-### Privasi dan etika pengambilan foto
+| Dataset | Isi yang dipakai | Lisensi | Kelas |
+|---|---|---|---|
+| [Image Dataset of Accessibility Barriers](https://zenodo.org/records/6382090) (Zenodo) | Foto pintu masuk bangunan dari Wheelmap beserta kotak ramp, tangga, dan undakan yang dilabeli manusia | CC BY 4.0 | `ramp`, `tangga` |
+| [Open Images V7](https://storage.googleapis.com/openimages/web/index.html) | Bagian validasi dan uji yang memuat kelas Door, Stairs, dan Toilet | Label CC BY 4.0, foto CC BY 2.0 | `pintu`, `tangga` |
+| [Wikimedia Commons](https://commons.wikimedia.org/wiki/Category:Accessible_toilets), kategori Accessible toilets | Foto toilet yang diperiksa satu per satu oleh tim | CC BY, CC BY-SA, CC0, sesuai tiap foto | `toilet_aksesibel` |
 
-- Jangan memotret orang tanpa izin. Wajah dan plat nomor yang tertangkap kamera wajib dikaburkan sebelum foto disimpan ke dataset.
-- Foto toilet hanya diambil saat toilet kosong.
-- Minta izin pengelola untuk tempat yang bukan area publik.
+Foto sendiri tetap boleh ditambahkan kemudian. Jika itu dilakukan, wajah dan plat nomor wajib dikaburkan, foto toilet hanya diambil saat kosong, dan tempat yang bukan area publik memerlukan izin pengelola.
+
+### Komposisi
+
+Total 1.536 foto: 754 dari Zenodo, 630 dari Open Images, dan 152 dari Wikimedia Commons.
+
+| Kelas | Foto berisi objek | Foto tanpa objek | Kotak pembatas |
+|---|---|---|---|
+| `ramp` | 129 | 625 | 143 |
+| `tangga` | 781 | 600 | 1.150 |
+| `pintu` | 329 | 240 | 444 |
+| `toilet_aksesibel` | 60 | 1.386 | 0 |
+
+### Pelabelan
+
+Setiap foto memiliki label tingkat foto untuk keempat kelas dengan nilai `1` (ada), `0` (tidak ada), atau `null` (tidak diketahui karena sumbernya tidak melabeli kelas tersebut). Foto dengan label `null` tidak dipakai untuk melatih maupun mengevaluasi kelas itu.
+
+| Sumber | Aturan pemetaan label |
+|---|---|
+| Zenodo | `ramp` dari label ramp. `tangga` dari label stair dan step setinggi 3 cm atau lebih. Foto yang hanya berisi step di bawah 3 cm diberi `null` untuk `tangga`, karena undakan serendah itu tidak termasuk definisi tangga di pedoman anotasi. `pintu` selalu `null` karena pintu tidak dilabeli. `toilet_aksesibel` selalu `0` karena seluruh fotonya bagian luar bangunan |
+| Open Images | `pintu` dari kelas Door, kecuali kotak yang lebih dari separuhnya berada di dalam kotak kendaraan atau lemari, karena pedoman anotasi tidak menganggap pintu kendaraan dan lemari sebagai pintu. `tangga` dari kelas Stairs. Foto yang memuat kelas Toilet diberi `null` untuk `toilet_aksesibel`, karena labelnya tidak membedakan kloset biasa dan kloset berpegangan |
+| Wikimedia Commons | `toilet_aksesibel` diperiksa visual satu per satu terhadap pedoman anotasi. Foto yang meragukan, seperti gambar ilustrasi, papan petunjuk tanpa pintu, atau kloset yang pegangannya tidak terlihat, tidak dipakai |
+
+Kotak pembatas berasal dari label sumber dan dipakai untuk melatih penilaian per bagian foto. Kelas `toilet_aksesibel` tidak memiliki kotak.
 
 ### Pembagian data
 
-| Bagian | Proporsi |
-|---|---|
-| Latih | 70% |
-| Validasi | 20% |
-| Uji | 10% |
+Dataset dibagi ke lima lipatan untuk validasi silang, dicatat di field `lipatan`. Foto yang hampir identik, yaitu yang nilai *difference hash*-nya berbeda paling banyak 6 bit, selalu ditempatkan di lipatan yang sama. Dengan begitu, foto yang sama dengan sudut sedikit berbeda tidak muncul sekaligus di data latih dan data uji.
 
-Pembagian dilakukan **per lokasi, bukan per foto**. Semua foto dari satu lokasi harus berada di bagian yang sama. Jika foto ramp yang sama dari sudut sedikit berbeda masuk ke bagian latih dan uji sekaligus, akurasi hasil uji akan terlihat jauh lebih bagus dari kenyataannya.
+Pembagian per lokasi seperti rencana awal tidak bisa dilakukan, karena dataset publik tidak menyertakan identitas lokasi. Hal ini dicatat sebagai keterbatasan.
 
 ### Penyimpanan
 
-- Anotasi memakai Label Studio atau CVAT dengan ekspor format YOLO.
-- Dataset disimpan di folder bersama tim di luar repositori, dengan struktur `images/{train,val,test}` dan `labels/{train,val,test}`.
-- Repositori hanya menyimpan `ai-service/pelatihan/data.yaml` dan skrip pelatihan.
-- Setiap versi dataset diberi nama tanggal, contoh `dataset-2026-10-04`, dan tidak pernah ditimpa.
+- `ai-service/dataset/anotasi.jsonl` menyimpan satu baris per foto: nama berkas, sumber, identitas foto di sumber, label tingkat foto, kotak pembatas ternormalisasi, lipatan, tautan asli, lisensi, dan pembuat.
+- Foto tidak disimpan di repositori. Foto diunduh ulang dari sumber aslinya ke folder di luar repositori:
+
+```bash
+cd ai-service
+pip install -r dataset/requirements.txt
+python dataset/unduh.py ../../aksesin-dataset/dataset-2026-10-10
+```
+
+- Setiap versi anotasi diberi nama tanggal di nama folder unduhan, contoh `dataset-2026-10-10`, dan versi lama tidak pernah ditimpa.
+
+### Keterbatasan
+
+- Sebagian besar foto berasal dari Eropa, sehingga bentuk ramp, pintu, dan toilet bisa berbeda dari kondisi di Indonesia.
+- Contoh ramp hanya 129 foto dan banyak di antaranya memperlihatkan ramp kecil di kejauhan, sehingga kelas ini paling sulit dikenali.
+- Contoh toilet aksesibel hanya 60 foto.
+- Beberapa foto Zenodo bisa berasal dari tempat yang sama dengan sudut yang berbeda jauh, sehingga tidak terdeteksi sebagai foto yang hampir identik.
 
 ## Pelatihan
 
@@ -187,12 +211,12 @@ Jika tidak, produksi tetap memakai vision API dan model sendiri dilaporkan sebag
 
 ### #24 Mengumpulkan dan menganotasi dataset foto fasilitas aksesibilitas
 
-- [ ] Pedoman anotasi di dokumen ini dibagikan dan dipahami semua orang yang ikut menganotasi.
-- [ ] Target minimum dataset tercapai.
-- [ ] Wajah dan plat nomor pada seluruh foto sudah dikaburkan.
-- [ ] Pembagian latih, validasi, dan uji dilakukan per lokasi, dibuktikan dengan daftar lokasi per bagian.
-- [ ] Sampel acak 30 foto diperiksa ulang oleh anggota lain terhadap pedoman anotasi, dengan tingkat ketidaksesuaian di bawah 10%.
-- [ ] Sumber dan lisensi setiap dataset publik yang dipakai tercatat.
+- [ ] Anotasi tersimpan di `ai-service/dataset/anotasi.jsonl` dengan aturan pemetaan label sesuai bagian Pelabelan.
+- [ ] Sumber, tautan asli, lisensi, dan pembuat setiap foto tercatat di anotasi.
+- [ ] Seluruh foto dapat diunduh ulang dari sumber aslinya dengan `ai-service/dataset/unduh.py`.
+- [ ] Label `toilet_aksesibel` dari Wikimedia Commons diperiksa visual terhadap pedoman anotasi.
+- [ ] Foto yang hampir identik selalu berada di lipatan yang sama.
+- [ ] Komposisi dataset per kelas tercatat di dokumen ini.
 
 ### #25 Melatih model deteksi menggunakan transfer learning
 

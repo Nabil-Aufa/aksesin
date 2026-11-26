@@ -61,9 +61,7 @@ Semua commit baru di branch NIU otomatis ikut masuk ke pull request yang sedang 
 
 - Setiap anggota hanya punya satu pull request terbuka pada satu waktu.
 - Commit untuk issue berikutnya baru dimulai setelah pull request sebelumnya di-merge dan branch sudah disinkronkan dengan `main`.
-- Selama menunggu review, manfaatkan waktu untuk mereview pull request anggota lain atau mempelajari issue berikutnya tanpa commit.
-
-Aturan ini membuat kecepatan review sangat menentukan kecepatan tim, sehingga batas waktu review satu hari kerja di bagian review wajib dipatuhi.
+- Karena persetujuan tidak wajib, pull request langsung digabung setelah CI hijau supaya branch NIU segera bisa dipakai untuk issue berikutnya.
 
 ## Commit
 
@@ -118,8 +116,8 @@ Wajib untuk perubahan antarmuka.
 
 ### Review
 
-- Minimal satu persetujuan dari anggota lain. Pemilik issue tidak boleh menyetujui pull request miliknya sendiri.
-- Reviewer utama per jenis pekerjaan:
+- Persetujuan dari anggota lain tidak wajib. Pemilik pull request boleh menggabungkannya sendiri setelah CI hijau, dan pemeriksaan menyeluruh dilakukan lewat smoke test menjelang rilis.
+- Review tetap dianjurkan untuk perubahan besar. Reviewer utama per jenis pekerjaan:
 
 | Jenis perubahan | Reviewer utama |
 |---|---|
@@ -128,12 +126,11 @@ Wajib untuk perubahan antarmuka.
 | Layanan AI dan pipeline pelatihan | Nabil, atau Gilbert jika Nabil pemiliknya |
 | Konfigurasi deployment | Nayla, atau Nabil jika Nayla pemiliknya |
 
-- Review diberikan paling lambat satu hari kerja setelah pull request dibuka.
-- Komentar review yang bersifat saran diawali `Saran:`. Komentar tanpa awalan itu wajib ditangani sebelum merge.
+- Komentar review yang bersifat saran diawali `Saran:`. Komentar tanpa awalan itu sebaiknya ditangani sebelum merge, atau dicatat sebagai issue baru.
 
 ### Merge
 
-- Syarat merge: seluruh job CI hijau, minimal satu persetujuan, tidak ada konflik dengan `main`.
+- Syarat merge: seluruh job CI hijau dan tidak ada konflik dengan `main`.
 - Metode merge: **Create a merge commit**. Jangan memakai squash atau rebase, karena riwayat commit setiap anggota harus tetap terlihat.
 - Branch NIU tidak dihapus setelah merge. Pemilik langsung menyinkronkannya dengan `main` sebelum mengerjakan issue berikutnya.
 
@@ -141,7 +138,7 @@ Wajib untuk perubahan antarmuka.
 
 Pengaturan di Settings, Branches, untuk `main`:
 
-- Require a pull request before merging, dengan 1 approval.
+- Require a pull request before merging, tanpa approval wajib.
 - Require status checks to pass: `Validasi dokumen dan aset GitHub Page`, `Lint dan build frontend Next.js`, `Lint dan uji layanan deteksi AI`.
 - Require branches to be up to date before merging.
 - Allow merge commits aktif. Squash dan rebase dinonaktifkan.
@@ -152,7 +149,6 @@ Sebuah issue baru boleh ditutup jika seluruh poin berikut terpenuhi:
 
 - [ ] Semua kriteria penerimaan di dokumen modul terpenuhi.
 - [ ] CI hijau.
-- [ ] Sudah direview dan disetujui anggota lain.
 - [ ] Perubahan antarmuka sudah dicoba di layar selebar 360 px dan 1280 px.
 - [ ] Perubahan antarmuka dapat dioperasikan penuh memakai keyboard.
 - [ ] Perubahan skema basis data tersimpan sebagai file migrasi.
