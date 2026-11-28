@@ -7,11 +7,13 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "cek:warna": "node scripts/cek-warna.mjs",
     "test": "vitest run"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
     "@supabase/supabase-js": "^2.116.0",
+    "lucide-react": "^1.80.0",
     "next": "16.3.5",
     "react": "19.2.8",
     "react-dom": "19.2.8"

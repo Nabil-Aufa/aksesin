@@ -87,6 +87,11 @@ jobs:
         working-directory: web
         run: npm ci
 
+      - name: Periksa warna mentah di luar token
+        if: steps.cek.outputs.ada == 'true'
+        working-directory: web
+        run: npm run cek:warna
+
       - name: Jalankan lint
         if: steps.cek.outputs.ada == 'true'
         working-directory: web

@@ -1,26 +1,93 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+  Token mengikuti docs/plans/07-panduan-antarmuka.md dan desain di
+  docs/desain/aksesin-ui.pen. Palet dan skala bawaan Tailwind dikosongkan
+  supaya komponen hanya bisa memakai token di bawah.
+*/
+@theme {
+  --color-*: initial;
+  --color-tinta: #0b1f33;
+  --color-primer: #1f5bd6;
+  --color-primer-tua: #163e9c;
+  --color-primer-muda: #eef4ff;
+  /* Sinyal hanya untuk latar dan cincin fokus, tidak pernah untuk warna teks. */
+  --color-sinyal: #ffd43b;
+  --color-teks-sekunder: #4f5a6b;
+  --color-permukaan: #f3f6fb;
+  --color-garis-kontrol: #7a8599;
+  --color-garis-dekoratif: #dce3ee;
+  --color-latar: #ffffff;
+  --color-sukses: #1e7a3c;
+  --color-sukses-latar: #e6f4ea;
+  --color-peringatan: #8a5a00;
+  --color-peringatan-latar: #fdf3dc;
+  --color-bahaya: #b42318;
+  --color-bahaya-latar: #fdecea;
+
+  --text-*: initial;
+  --text-judul-1: 1.75rem;
+  --text-judul-1--line-height: 2.125rem;
+  --text-judul-1--font-weight: 800;
+  --text-judul-2: 1.375rem;
+  --text-judul-2--line-height: 1.75rem;
+  --text-judul-2--font-weight: 700;
+  --text-judul-3: 1.125rem;
+  --text-judul-3--line-height: 1.5rem;
+  --text-judul-3--font-weight: 700;
+  --text-isi: 1rem;
+  --text-isi--line-height: 1.5rem;
+  --text-kecil: 0.875rem;
+  --text-kecil--line-height: 1.25rem;
+  --text-mini: 0.75rem;
+  --text-mini--line-height: 1rem;
+
+  --radius-*: initial;
+  --radius-kontrol: 0.75rem;
+  --radius-kartu: 1rem;
+  --radius-full: calc(infinity * 1px);
+
+  --breakpoint-*: initial;
+  --breakpoint-sm: 40rem;
+  --breakpoint-lg: 64rem;
+
+  --container-konten: 40rem;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-*: initial;
+  --font-judul: var(--font-plus-jakarta-sans), system-ui, sans-serif;
+  --font-isi: var(--font-atkinson-hyperlegible), system-ui, sans-serif;
+  --font-angka: var(--font-jetbrains-mono), ui-monospace, monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  body {
+    @apply bg-latar font-isi text-isi text-tinta;
   }
-}
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-judul;
+  }
+
+  /* Cincin gelap di dalam dan halo kuning di luar supaya terlihat di latar terang maupun primer. */
+  :focus-visible {
+    outline: 3px solid var(--color-sinyal);
+    outline-offset: 3px;
+    box-shadow: 0 0 0 3px var(--color-tinta);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
 }
