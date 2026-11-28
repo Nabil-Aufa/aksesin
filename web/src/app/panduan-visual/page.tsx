@@ -21,9 +21,11 @@ import type {
 export const metadata: Metadata = { title: "Panduan Visual" };
 
 const tokenWarna = [
+  ["tinta", "bg-tinta"],
   ["primer", "bg-primer"],
+  ["primer-tua", "bg-primer-tua"],
   ["primer-muda", "bg-primer-muda"],
-  ["teks", "bg-teks"],
+  ["sinyal", "bg-sinyal"],
   ["teks-sekunder", "bg-teks-sekunder"],
   ["permukaan", "bg-permukaan"],
   ["garis-kontrol", "bg-garis-kontrol"],
@@ -77,7 +79,7 @@ export default function PanduanVisualPage() {
               <li key={nama} className="flex items-center gap-3">
                 <span
                   aria-hidden="true"
-                  className={`size-10 shrink-0 rounded-dasar border border-garis-dekoratif ${kelas}`}
+                  className={`size-10 shrink-0 rounded-kontrol border border-garis-dekoratif ${kelas}`}
                 />
                 <code className="text-kecil">{nama}</code>
               </li>
@@ -93,12 +95,17 @@ export default function PanduanVisualPage() {
               </li>
             ))}
           </ul>
+          <p>
+            Ukuran memakai font angka: <span className="font-angka">90 cm</span>
+          </p>
         </Bagian>
 
         <Bagian judul="Tombol">
           <div className="flex flex-wrap gap-3">
             <Tombol>Primer</Tombol>
             <Tombol varian="sekunder">Sekunder</Tombol>
+            <Tombol varian="teks">Teks</Tombol>
+            <Tombol ukuran="ringkas">Ringkas</Tombol>
             <Tombol disabled>Nonaktif</Tombol>
             <Tombol memuat>Menyimpan</Tombol>
           </div>

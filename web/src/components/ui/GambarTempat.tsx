@@ -34,7 +34,7 @@ export function GambarTempat({ src, alt, deteksi }: GambarTempatProps) {
 
   return (
     <figure className="flex flex-col gap-2">
-      <div className="relative aspect-4/3 w-full overflow-hidden rounded-dasar bg-permukaan">
+      <div className="relative aspect-4/3 w-full overflow-hidden rounded-kartu bg-permukaan">
         {keadaan === "memuat" && (
           <div
             role="status"

@@ -70,3 +70,12 @@ describe("ringkasanDeteksi", () => {
     expect(ringkasanDeteksi([])).toBe("AI tidak mendeteksi fasilitas pada foto ini.");
   });
 });
+
+describe("KolomIsian galat", () => {
+  test("pesan galat disertai ikon, bukan warna saja", () => {
+    const wadah = render(<KolomIsian label="Kata sandi" galat="Minimal 8 karakter" />);
+    const galat = wadah.querySelector('[id$="-galat"]')!;
+    expect(galat.textContent).toBe("Minimal 8 karakter");
+    expect(galat.querySelector("svg")?.getAttribute("aria-hidden")).toBe("true");
+  });
+});

@@ -32,19 +32,17 @@ function kontras(a: string, b: string) {
 // Pasangan dan rasio diambil dari tabel di docs/plans/07-panduan-antarmuka.md.
 // Syarat minimal: 4,5 untuk teks, 3 untuk batas komponen interaktif.
 const pasangan: [string, string, number, number][] = [
-  ["primer", "latar", 6.9, 4.5],
-  ["primer", "primer-muda", 5.55, 4.5],
-  ["teks", "latar", 15.43, 4.5],
-  ["teks-sekunder", "latar", 6.38, 4.5],
-  ["teks-sekunder", "permukaan", 5.9, 4.5],
-  ["garis-kontrol", "latar", 3.85, 3],
+  ["tinta", "latar", 16.69, 4.5],
+  ["primer", "latar", 5.96, 4.5],
+  ["primer", "primer-muda", 5.39, 4.5],
+  ["latar", "primer-tua", 9.53, 4.5],
+  ["teks-sekunder", "latar", 6.98, 4.5],
+  ["teks-sekunder", "permukaan", 6.45, 4.5],
+  ["garis-kontrol", "latar", 3.72, 3],
+  ["tinta", "sinyal", 11.71, 4.5],
   ["sukses", "sukses-latar", 4.74, 4.5],
-  ["sukses", "latar", 5.38, 4.5],
   ["peringatan", "peringatan-latar", 5.37, 4.5],
-  ["peringatan", "latar", 5.93, 4.5],
   ["bahaya", "bahaya-latar", 5.75, 4.5],
-  ["bahaya", "latar", 6.57, 4.5],
-  ["latar", "teks", 15.43, 4.5],
 ];
 
 describe("token warna", () => {

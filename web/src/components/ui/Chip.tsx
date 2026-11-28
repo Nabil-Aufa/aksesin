@@ -35,7 +35,7 @@ type ChipProps = {
 export function Chip({ nada, ikon: Ikon, children }: ChipProps) {
   return (
     <span
-      className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-kecil font-medium ${kelasNada[nada]}`}
+      className={`inline-flex items-center gap-1 min-h-8 rounded-full px-3 py-1 text-kecil font-bold ${kelasNada[nada]}`}
     >
       {Ikon && <Ikon aria-hidden="true" className="size-4 shrink-0" />}
       {children}
