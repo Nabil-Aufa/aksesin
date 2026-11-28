@@ -1595,7 +1595,7 @@
                                   "id": "YxNac",
                                   "name": "Label",
                                   "fill": "$putih",
-                                  "content": "Memuat…",
+                                  "content": "Memuat...",
                                   "fontFamily": "$font-isi",
                                   "fontSize": 16,
                                   "fontWeight": "700"
@@ -1986,7 +1986,7 @@
                                   "id": "EQQVg",
                                   "name": "Label",
                                   "fill": "$primer",
-                                  "content": "Memuat…",
+                                  "content": "Memuat...",
                                   "fontFamily": "$font-isi",
                                   "fontSize": 16,
                                   "fontWeight": "700"
@@ -2366,7 +2366,7 @@
                                   "id": "qjyza",
                                   "name": "Label",
                                   "fill": "$primer",
-                                  "content": "Memuat…",
+                                  "content": "Memuat...",
                                   "fontFamily": "$font-isi",
                                   "fontSize": 16,
                                   "fontWeight": "700"
@@ -4769,7 +4769,7 @@
       "id": "Y7xbby",
       "x": 1600,
       "y": 0,
-      "name": "Beranda — Desktop",
+      "name": "Beranda - Desktop",
       "clip": true,
       "width": 1440,
       "fill": "$permukaan",
@@ -4804,78 +4804,66 @@
               "type": "frame",
               "id": "tr15z",
               "name": "Hero",
+              "metadata": {
+                "type": "unsplash",
+                "username": "fstopusa",
+                "link": "https://unsplash.com/@fstopusa",
+                "author": "Stephen Ellis"
+              },
               "clip": true,
               "width": "fill_container",
-              "fill": {
-                "type": "gradient",
-                "gradientType": "linear",
-                "enabled": true,
-                "rotation": -110,
-                "size": {
-                  "height": 1
+              "height": 560,
+              "fill": [
+                {
+                  "type": "image",
+                  "enabled": true,
+                  "url": "https://images.unsplash.com/photo-1627918684982-54640e90b592?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3OTU4NDc4Mzd8&ixlib=rb-4.1.0&q=80&w=1080",
+                  "mode": "cover"
                 },
-                "colors": [
-                  {
-                    "color": "#163E9C",
-                    "position": 0
+                {
+                  "type": "gradient",
+                  "gradientType": "linear",
+                  "enabled": true,
+                  "rotation": 90,
+                  "size": {
+                    "height": 1
                   },
-                  {
-                    "color": "#1F5BD6",
-                    "position": 0.62
-                  },
-                  {
-                    "color": "#2F6FE4",
-                    "position": 1
-                  }
-                ]
-              },
+                  "colors": [
+                    {
+                      "color": "#0B1F33F2",
+                      "position": 0
+                    },
+                    {
+                      "color": "#0B1F33D9",
+                      "position": 0.5
+                    },
+                    {
+                      "color": "#0B1F3340",
+                      "position": 1
+                    }
+                  ]
+                }
+              ],
               "cornerRadius": 28,
               "gap": 56,
               "padding": 72,
               "alignItems": "center",
               "children": [
                 {
-                  "type": "ellipse",
-                  "id": "H80O3X",
-                  "layoutPosition": "absolute",
-                  "x": 980,
-                  "y": -220,
-                  "name": "Dekor Cahaya",
-                  "fill": {
-                    "type": "gradient",
-                    "gradientType": "radial",
-                    "enabled": true,
-                    "rotation": 0,
-                    "size": {
-                      "width": 1,
-                      "height": 1
-                    },
-                    "colors": [
-                      {
-                        "color": "#FFFFFF33",
-                        "position": 0
-                      },
-                      {
-                        "color": "#FFFFFF00",
-                        "position": 1
-                      }
-                    ]
-                  },
-                  "width": 620,
-                  "height": 620
-                },
-                {
                   "type": "frame",
                   "id": "rx10l",
                   "name": "Kiri",
-                  "width": "fill_container",
+                  "width": 680,
                   "layout": "vertical",
                   "gap": 28,
                   "children": [
                     {
                       "type": "frame",
                       "id": "ZkShR",
+                      "x": 0,
+                      "y": 0,
                       "name": "Eyebrow",
+                      "enabled": false,
                       "fill": "#FFFFFF1F",
                       "cornerRadius": 999,
                       "stroke": "#FFFFFF59",
@@ -4916,7 +4904,7 @@
                       "fill": "#FFFFFF",
                       "textGrowth": "fixed-width",
                       "width": "fill_container",
-                      "content": "Temukan tempat yang benar‑benar bisa kamu datangi.",
+                      "content": "Temukan tempat yang bisa kamu datangi.",
                       "lineHeight": 1.08,
                       "fontFamily": "$font-judul",
                       "fontSize": 56,
@@ -4930,7 +4918,7 @@
                       "fill": "#FFFFFF",
                       "textGrowth": "fixed-width",
                       "width": 600,
-                      "content": "Aksesin mencocokkan ukuran nyata—tinggi undakan, lebar pintu, toilet, lift—dengan kebutuhanmu, lalu menjelaskan alasannya.",
+                      "content": "Cek undakan, lebar pintu, toilet, dan lift sebelum berangkat. Hasilnya dicocokkan dengan kebutuhanmu.",
                       "lineHeight": 1.5,
                       "fontFamily": "$font-isi",
                       "fontSize": 19,
@@ -5051,7 +5039,10 @@
                 {
                   "type": "frame",
                   "id": "Ab2GS",
+                  "x": 884,
+                  "y": 128,
                   "name": "Kanan",
+                  "enabled": false,
                   "width": 420,
                   "layout": "vertical",
                   "gap": 16,
@@ -5402,10 +5393,8 @@
                     "l8jhj": {
                       "content": "650 m"
                     },
-                    "OlCPb": {
-                      "variant": {
-                        "status": "sesuai"
-                      }
+                    "OlCPb/me8fC": {
+                      "content": "Sesuai · 92"
                     }
                   }
                 },
@@ -5437,6 +5426,9 @@
                       "variant": {
                         "status": "terbatas"
                       }
+                    },
+                    "OlCPb/Bd0kr": {
+                      "content": "Sebagian sesuai · 64"
                     }
                   }
                 },
@@ -5451,6 +5443,7 @@
                       "fill": {
                         "type": "image",
                         "enabled": true,
+                        "url": "https://images.unsplash.com/photo-1542897730-6e8d4bfe5508?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3OTU4NDc4Mzd8&ixlib=rb-4.1.0&q=80&w=1080",
                         "mode": "cover"
                       }
                     },
@@ -5467,6 +5460,9 @@
                       "variant": {
                         "status": "belum-ada-data"
                       }
+                    },
+                    "OlCPb/BuOZH": {
+                      "content": "Belum cukup data"
                     }
                   }
                 }
@@ -5513,7 +5509,7 @@
                       "fill": "$tinta",
                       "textGrowth": "fixed-width",
                       "width": "fill_container",
-                      "content": "Bukan bintang lima. Angka yang bisa dicek.",
+                      "content": "Cara Aksesin menilai tempat",
                       "lineHeight": 1.2,
                       "fontFamily": "$font-judul",
                       "fontSize": 26,
@@ -5526,7 +5522,7 @@
                       "fill": "$teks-sekunder",
                       "textGrowth": "fixed-width",
                       "width": "fill_container",
-                      "content": "Setiap skor bisa dibuka untuk melihat syaratmu dan kondisi tempat berdampingan.",
+                      "content": "Setiap skor bisa dibuka. Kamu bisa lihat syaratmu dan kondisi tempat secara berdampingan.",
                       "lineHeight": 1.5,
                       "fontFamily": "$font-isi",
                       "fontSize": 16,
@@ -5742,7 +5738,7 @@
                       "fill": "$teks-sekunder",
                       "textGrowth": "fixed-width",
                       "width": "fill_container",
-                      "content": "Pengguna lain mengonfirmasi atau menyanggah. Data lama turun kepercayaannya.",
+                      "content": "Pengguna lain bisa mengonfirmasi atau menyanggah. Data yang sudah lama makin rendah kepercayaannya.",
                       "lineHeight": 1.5,
                       "fontFamily": "$font-isi",
                       "fontSize": 16,
@@ -5824,7 +5820,7 @@
       "id": "ZRVGY",
       "x": 4800,
       "y": 0,
-      "name": "Detail Tempat — Desktop",
+      "name": "Detail Tempat - Desktop",
       "clip": true,
       "width": 1440,
       "fill": "$permukaan",
@@ -6972,7 +6968,7 @@
       "id": "zoDqb",
       "x": 3200,
       "y": 0,
-      "name": "Hasil Pencarian — Desktop",
+      "name": "Hasil Pencarian - Desktop",
       "clip": true,
       "width": 1440,
       "height": 1000,
@@ -8238,7 +8234,7 @@
       "id": "LVJLZ",
       "x": 8000,
       "y": 0,
-      "name": "Tambah Laporan — Desktop",
+      "name": "Tambah Laporan - Desktop",
       "clip": true,
       "width": 1440,
       "fill": "$permukaan",
@@ -9726,7 +9722,7 @@
       "id": "kcJzJ",
       "x": 9600,
       "y": 0,
-      "name": "Masuk — Desktop",
+      "name": "Masuk - Desktop",
       "clip": true,
       "width": 1440,
       "height": 900,
@@ -10231,7 +10227,7 @@
       "id": "K8hr6",
       "x": 11200,
       "y": 0,
-      "name": "Profil Kebutuhan — Desktop",
+      "name": "Profil Kebutuhan - Desktop",
       "clip": true,
       "width": 1440,
       "fill": "$permukaan",
@@ -11179,7 +11175,7 @@
       "id": "Wali4",
       "x": 12800,
       "y": 0,
-      "name": "Saya — Desktop",
+      "name": "Saya - Desktop",
       "clip": true,
       "width": 1440,
       "fill": "$permukaan",
@@ -11595,7 +11591,7 @@
                       "id": "lhEJi",
                       "name": "Jumlah",
                       "fill": "$teks-sekunder",
-                      "content": "1–5 dari 14",
+                      "content": "1-5 dari 14",
                       "fontFamily": "$font-angka",
                       "fontSize": 14,
                       "fontWeight": "normal"
@@ -12283,7 +12279,7 @@
       "id": "ijjEt",
       "x": 14400,
       "y": 0,
-      "name": "Moderasi — Desktop",
+      "name": "Moderasi - Desktop",
       "clip": true,
       "width": 1440,
       "height": 1000,
@@ -13108,7 +13104,7 @@
       "id": "vyXxz",
       "x": 1600,
       "y": 3756,
-      "name": "Beranda — HP",
+      "name": "Beranda - HP",
       "clip": true,
       "width": 360,
       "fill": "$permukaan",
@@ -13119,25 +13115,33 @@
           "id": "sMF7U",
           "name": "Hero",
           "width": "fill_container",
-          "fill": {
-            "type": "gradient",
-            "gradientType": "linear",
-            "enabled": true,
-            "rotation": -150,
-            "size": {
-              "height": 1
+          "fill": [
+            {
+              "type": "image",
+              "enabled": true,
+              "url": "https://images.unsplash.com/photo-1627918684982-54640e90b592?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3OTU4NDc4Mzd8&ixlib=rb-4.1.0&q=80&w=1080",
+              "mode": "cover"
             },
-            "colors": [
-              {
-                "color": "#163E9C",
-                "position": 0
+            {
+              "type": "gradient",
+              "gradientType": "linear",
+              "enabled": true,
+              "rotation": 180,
+              "size": {
+                "height": 1
               },
-              {
-                "color": "#1F5BD6",
-                "position": 1
-              }
-            ]
-          },
+              "colors": [
+                {
+                  "color": "#0B1F33E6",
+                  "position": 0
+                },
+                {
+                  "color": "#0B1F33D9",
+                  "position": 1
+                }
+              ]
+            }
+          ],
           "cornerRadius": [
             0,
             0,
@@ -13202,7 +13206,7 @@
               "fill": "#FFFFFF",
               "textGrowth": "fixed-width",
               "width": "fill_container",
-              "content": "Temukan tempat yang benar‑benar bisa kamu datangi.",
+              "content": "Temukan tempat yang bisa kamu datangi.",
               "lineHeight": 1.12,
               "fontFamily": "$font-judul",
               "fontSize": 28,
@@ -13527,7 +13531,7 @@
                       "id": "mTnYj",
                       "name": "Angka",
                       "fill": "$tinta",
-                      "content": "–",
+                      "content": "-",
                       "fontFamily": "$font-judul",
                       "fontSize": 20,
                       "fontWeight": "800"
@@ -13611,7 +13615,7 @@
       "id": "fDDYe",
       "x": 2480,
       "y": 3756,
-      "name": "Detail Tempat — HP",
+      "name": "Detail Tempat - HP",
       "clip": true,
       "width": 360,
       "fill": "$permukaan",
@@ -13932,7 +13936,7 @@
       "id": "MlPOC",
       "x": 3360,
       "y": 3756,
-      "name": "Tambah Laporan — HP",
+      "name": "Tambah Laporan - HP",
       "clip": true,
       "width": 360,
       "fill": "#FFFFFF",
@@ -14351,7 +14355,7 @@
       "id": "HsDDj",
       "x": 9600,
       "y": 1060,
-      "name": "Daftar — Desktop",
+      "name": "Daftar - Desktop",
       "clip": true,
       "width": 1440,
       "height": 900,
@@ -14904,7 +14908,7 @@
       "id": "vcQLq",
       "x": 6400,
       "y": 0,
-      "name": "Bukti Fasilitas — Desktop",
+      "name": "Bukti Fasilitas - Desktop",
       "clip": true,
       "width": 1440,
       "fill": "$permukaan",
@@ -16199,7 +16203,7 @@
       "id": "MZpQa",
       "x": 6400,
       "y": 1706,
-      "name": "Dialog Tandai Laporan — Desktop",
+      "name": "Dialog Tandai Laporan - Desktop",
       "clip": true,
       "width": 1440,
       "height": 900,
@@ -16569,7 +16573,7 @@
       "id": "a8EYeG",
       "x": 4800,
       "y": 1513,
-      "name": "Keadaan — Detail Tempat",
+      "name": "Keadaan - Detail Tempat",
       "width": 1440,
       "fill": "#FFFFFF",
       "layout": "vertical",
@@ -16799,7 +16803,7 @@
                               "fill": "$tinta",
                               "textGrowth": "fixed-width",
                               "width": "fill_container",
-                              "content": "Mengambil data dari OpenStreetMap…",
+                              "content": "Mengambil data dari OpenStreetMap...",
                               "fontFamily": "$font-isi",
                               "fontSize": 15,
                               "fontWeight": "700"
@@ -16867,7 +16871,7 @@
       "id": "gil6H",
       "x": 3200,
       "y": 1160,
-      "name": "Keadaan — Hasil Pencarian",
+      "name": "Keadaan - Hasil Pencarian",
       "width": 1440,
       "fill": "#FFFFFF",
       "layout": "vertical",
@@ -16926,7 +16930,7 @@
                       "id": "pe9Ev",
                       "name": "Status",
                       "fill": "$teks-sekunder",
-                      "content": "Mencari tempat…",
+                      "content": "Mencari tempat...",
                       "fontFamily": "$font-isi",
                       "fontSize": 15,
                       "fontWeight": "700"
@@ -17207,7 +17211,7 @@
                           "fill": "$tinta",
                           "textGrowth": "fixed-width",
                           "width": "fill_container",
-                          "content": "Tidak ada tempat untuk “perpus jogja”",
+                          "content": "Tidak ada tempat untuk \"perpus jogja\"",
                           "textAlign": "center",
                           "fontFamily": "$font-judul",
                           "fontSize": 19,
@@ -17220,7 +17224,7 @@
                           "fill": "$teks-sekunder",
                           "textGrowth": "fixed-width",
                           "width": "fill_container",
-                          "content": "Coba kata kunci lain, atau matikan filter “Sesuai profilku”.",
+                          "content": "Coba kata kunci lain, atau matikan filter \"Sesuai profilku\".",
                           "lineHeight": 1.45,
                           "textAlign": "center",
                           "fontFamily": "$font-isi",
@@ -17492,7 +17496,7 @@
       "id": "z9zSF",
       "x": 8000,
       "y": 1440,
-      "name": "Laporan Terkirim — Desktop",
+      "name": "Laporan Terkirim - Desktop",
       "clip": true,
       "width": 1440,
       "fill": "$permukaan",
@@ -17899,7 +17903,7 @@
       "id": "CqFLv",
       "x": 14400,
       "y": 1160,
-      "name": "Moderasi — Tanda & Ubah Tempat",
+      "name": "Moderasi - Tanda & Ubah Tempat",
       "width": 1440,
       "fill": "#FFFFFF",
       "layout": "vertical",
@@ -18498,7 +18502,7 @@
       "id": "eHiXW",
       "x": 16000,
       "y": 0,
-      "name": "404 — Desktop",
+      "name": "404 - Desktop",
       "clip": true,
       "width": 1440,
       "height": 900,
@@ -18606,7 +18610,7 @@
       "id": "J7iAy",
       "x": 2040,
       "y": 3756,
-      "name": "Hasil Pencarian — HP",
+      "name": "Hasil Pencarian - HP",
       "clip": true,
       "width": 360,
       "fill": "$permukaan",
@@ -19274,7 +19278,7 @@
       "id": "CAfLy",
       "x": 3800,
       "y": 3756,
-      "name": "Masuk — HP",
+      "name": "Masuk - HP",
       "clip": true,
       "width": 360,
       "fill": "#FFFFFF",
@@ -19526,7 +19530,7 @@
       "id": "sUrGl",
       "x": 2920,
       "y": 3756,
-      "name": "Bukti Fasilitas — HP",
+      "name": "Bukti Fasilitas - HP",
       "clip": true,
       "width": 360,
       "fill": "$permukaan",
@@ -19867,7 +19871,7 @@
       "id": "atSIF",
       "x": 4240,
       "y": 3756,
-      "name": "Profil Kebutuhan — HP",
+      "name": "Profil Kebutuhan - HP",
       "clip": true,
       "width": 360,
       "fill": "#FFFFFF",
@@ -20431,7 +20435,7 @@
       "id": "iLw48",
       "x": 4680,
       "y": 3756,
-      "name": "Saya — HP",
+      "name": "Saya - HP",
       "clip": true,
       "width": 360,
       "fill": "$permukaan",
@@ -21047,7 +21051,7 @@
                   "fill": "$tinta",
                   "textGrowth": "fixed-width",
                   "width": 300,
-                  "content": "Beranda — Desktop",
+                  "content": "Beranda - Desktop",
                   "fontFamily": "$font-isi",
                   "fontSize": 15
                 },
@@ -21058,7 +21062,7 @@
                   "fill": "$tinta",
                   "textGrowth": "fixed-width",
                   "width": 300,
-                  "content": "Beranda — HP",
+                  "content": "Beranda - HP",
                   "fontFamily": "$font-isi",
                   "fontSize": 15
                 },
@@ -21069,7 +21073,7 @@
                   "fill": "$tinta",
                   "textGrowth": "fixed-width",
                   "width": "fill_container",
-                  "content": "–",
+                  "content": "-",
                   "fontFamily": "$font-isi",
                   "fontSize": 15
                 },
@@ -21121,7 +21125,7 @@
                   "fill": "$tinta",
                   "textGrowth": "fixed-width",
                   "width": 300,
-                  "content": "Masuk — Desktop",
+                  "content": "Masuk - Desktop",
                   "fontFamily": "$font-isi",
                   "fontSize": 15
                 },
@@ -21132,7 +21136,7 @@
                   "fill": "$tinta",
                   "textGrowth": "fixed-width",
                   "width": 300,
-                  "content": "Masuk — HP",
+                  "content": "Masuk - HP",
                   "fontFamily": "$font-isi",
                   "fontSize": 15
                 },
@@ -21195,7 +21199,7 @@
                   "fill": "$tinta",
                   "textGrowth": "fixed-width",
                   "width": 300,
-                  "content": "Daftar — Desktop",
+                  "content": "Daftar - Desktop",
                   "fontFamily": "$font-isi",
                   "fontSize": 15
                 },
@@ -21206,7 +21210,7 @@
                   "fill": "$tinta",
                   "textGrowth": "fixed-width",
                   "width": 300,
-                  "content": "(pola sama dgn Masuk — HP)",
+                  "content": "(pola sama dgn Masuk - HP)",
                   "fontFamily": "$font-isi",
                   "fontSize": 15
                 },
@@ -21269,7 +21273,7 @@
                   "fill": "$tinta",
                   "textGrowth": "fixed-width",
                   "width": 300,
-                  "content": "Profil Kebutuhan — Desktop",
+                  "content": "Profil Kebutuhan - Desktop",
                   "fontFamily": "$font-isi",
                   "fontSize": 15
                 },
@@ -21280,7 +21284,7 @@
                   "fill": "$tinta",
                   "textGrowth": "fixed-width",
                   "width": 300,
-                  "content": "Profil Kebutuhan — HP",
+                  "content": "Profil Kebutuhan - HP",
                   "fontFamily": "$font-isi",
                   "fontSize": 15
                 },
@@ -21343,7 +21347,7 @@
                   "fill": "$tinta",
                   "textGrowth": "fixed-width",
                   "width": 300,
-                  "content": "Hasil Pencarian — Desktop",
+                  "content": "Hasil Pencarian - Desktop",
                   "fontFamily": "$font-isi",
                   "fontSize": 15
                 },
@@ -21354,7 +21358,7 @@
                   "fill": "$tinta",
                   "textGrowth": "fixed-width",
                   "width": 300,
-                  "content": "Hasil Pencarian — HP",
+                  "content": "Hasil Pencarian - HP",
                   "fontFamily": "$font-isi",
                   "fontSize": 15
                 },
@@ -21365,7 +21369,7 @@
                   "fill": "$tinta",
                   "textGrowth": "fixed-width",
                   "width": "fill_container",
-                  "content": "Keadaan — Hasil Pencarian",
+                  "content": "Keadaan - Hasil Pencarian",
                   "fontFamily": "$font-isi",
                   "fontSize": 15
                 },
@@ -21417,7 +21421,7 @@
                   "fill": "$tinta",
                   "textGrowth": "fixed-width",
                   "width": 300,
-                  "content": "Detail Tempat — Desktop",
+                  "content": "Detail Tempat - Desktop",
                   "fontFamily": "$font-isi",
                   "fontSize": 15
                 },
@@ -21428,7 +21432,7 @@
                   "fill": "$tinta",
                   "textGrowth": "fixed-width",
                   "width": 300,
-                  "content": "Detail Tempat — HP",
+                  "content": "Detail Tempat - HP",
                   "fontFamily": "$font-isi",
                   "fontSize": 15
                 },
@@ -21439,7 +21443,7 @@
                   "fill": "$tinta",
                   "textGrowth": "fixed-width",
                   "width": "fill_container",
-                  "content": "Keadaan — Detail Tempat",
+                  "content": "Keadaan - Detail Tempat",
                   "fontFamily": "$font-isi",
                   "fontSize": 15
                 },
@@ -21491,7 +21495,7 @@
                   "fill": "$tinta",
                   "textGrowth": "fixed-width",
                   "width": 300,
-                  "content": "Bukti Fasilitas — Desktop",
+                  "content": "Bukti Fasilitas - Desktop",
                   "fontFamily": "$font-isi",
                   "fontSize": 15
                 },
@@ -21502,7 +21506,7 @@
                   "fill": "$tinta",
                   "textGrowth": "fixed-width",
                   "width": 300,
-                  "content": "Bukti Fasilitas — HP",
+                  "content": "Bukti Fasilitas - HP",
                   "fontFamily": "$font-isi",
                   "fontSize": 15
                 },
@@ -21565,7 +21569,7 @@
                   "fill": "$tinta",
                   "textGrowth": "fixed-width",
                   "width": 300,
-                  "content": "Tambah Laporan — Desktop",
+                  "content": "Tambah Laporan - Desktop",
                   "fontFamily": "$font-isi",
                   "fontSize": 15
                 },
@@ -21576,7 +21580,7 @@
                   "fill": "$tinta",
                   "textGrowth": "fixed-width",
                   "width": 300,
-                  "content": "Tambah Laporan — HP",
+                  "content": "Tambah Laporan - HP",
                   "fontFamily": "$font-isi",
                   "fontSize": 15
                 },
@@ -21639,7 +21643,7 @@
                   "fill": "$tinta",
                   "textGrowth": "fixed-width",
                   "width": 300,
-                  "content": "Saya — Desktop",
+                  "content": "Saya - Desktop",
                   "fontFamily": "$font-isi",
                   "fontSize": 15
                 },
@@ -21650,7 +21654,7 @@
                   "fill": "$tinta",
                   "textGrowth": "fixed-width",
                   "width": 300,
-                  "content": "Saya — HP",
+                  "content": "Saya - HP",
                   "fontFamily": "$font-isi",
                   "fontSize": 15
                 },
@@ -21661,7 +21665,7 @@
                   "fill": "$tinta",
                   "textGrowth": "fixed-width",
                   "width": "fill_container",
-                  "content": "–",
+                  "content": "-",
                   "fontFamily": "$font-isi",
                   "fontSize": 15
                 },
@@ -21713,7 +21717,7 @@
                   "fill": "$tinta",
                   "textGrowth": "fixed-width",
                   "width": 300,
-                  "content": "Moderasi — Desktop",
+                  "content": "Moderasi - Desktop",
                   "fontFamily": "$font-isi",
                   "fontSize": 15
                 },
@@ -21735,7 +21739,7 @@
                   "fill": "$tinta",
                   "textGrowth": "fixed-width",
                   "width": "fill_container",
-                  "content": "Moderasi — Tanda & Ubah Tempat",
+                  "content": "Moderasi - Tanda & Ubah Tempat",
                   "fontFamily": "$font-isi",
                   "fontSize": 15
                 },
@@ -21784,7 +21788,7 @@
                   "fill": "$tinta",
                   "textGrowth": "fixed-width",
                   "width": 300,
-                  "content": "404 — Desktop",
+                  "content": "404 - Desktop",
                   "fontFamily": "$font-isi",
                   "fontSize": 15
                 },
@@ -21795,7 +21799,7 @@
                   "fill": "$tinta",
                   "textGrowth": "fixed-width",
                   "width": 300,
-                  "content": "–",
+                  "content": "-",
                   "fontFamily": "$font-isi",
                   "fontSize": 15
                 },
@@ -21806,7 +21810,7 @@
                   "fill": "$tinta",
                   "textGrowth": "fixed-width",
                   "width": "fill_container",
-                  "content": "–",
+                  "content": "-",
                   "fontFamily": "$font-isi",
                   "fontSize": 15
                 },
@@ -21817,7 +21821,7 @@
                   "fill": "$tinta",
                   "textGrowth": "fixed-width",
                   "width": 100,
-                  "content": "–",
+                  "content": "-",
                   "fontFamily": "$font-angka",
                   "fontSize": 15,
                   "fontWeight": "600"

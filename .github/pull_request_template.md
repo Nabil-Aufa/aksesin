@@ -8,7 +8,7 @@ Penjelasan singkat perubahan dan alasannya.
 
 ## Frame desain yang diikuti
 
-`docs/desain/ekspor/…`
+`docs/desain/ekspor/...`
 
 ## Cara menguji
 
