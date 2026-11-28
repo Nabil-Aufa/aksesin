@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "cek:warna": "node scripts/cek-warna.mjs",
     "test": "vitest run"
   },
   "dependencies": {
